@@ -24,3 +24,63 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ==========================================================================
+   Infinite Marquee & Outlined Typography for Scrolling Section
+   ========================================================================== */
+
+@keyframes marquee-scroll-left {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes marquee-scroll-right {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-marquee-left {
+  animation: marquee-scroll-left 45s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-right {
+  animation: marquee-scroll-right 45s linear infinite;
+  will-change: transform;
+}
+
+/* Pause animation on hover */
+.pause-on-hover:hover .animate-marquee-left,
+.pause-on-hover:hover .animate-marquee-right {
+  animation-play-state: paused;
+}
+
+/* Luxury Outlined / Stroke Typography */
+.stroke-text {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #d4d4d8;
+  letter-spacing: -0.02em;
+  transition: -webkit-text-stroke 0.3s ease, transform 0.3s ease;
+}
+
+.stroke-text:hover {
+  -webkit-text-stroke: 1.5px #f5a623;
+}
+
+@media (prefers-color-scheme: dark) {
+  .stroke-text {
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.22);
+  }
+  .stroke-text:hover {
+    -webkit-text-stroke: 1.5px #f5a623;
+  }
+}
+
