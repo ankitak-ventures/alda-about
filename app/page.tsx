@@ -4,6 +4,7 @@ import About from "@/components/About";
 import Scrolling from "@/components/Scrolling";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import Counter from "@/components/counter";
+import VisionMission from "@/components/VisionMission";
 
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
       <Scrolling />
       <WhyChooseUs />
       <Counter />
+      <VisionMission />
 
 
     </main>
