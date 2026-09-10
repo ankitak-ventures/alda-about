@@ -5,6 +5,7 @@ import Scrolling from "@/components/Scrolling";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import Counter from "@/components/counter";
 import VisionMission from "@/components/VisionMission";
+import Timeline from "@/components/Timeline";
 
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
       <WhyChooseUs />
       <Counter />
       <VisionMission />
+      <Timeline />
 
 
     </main>
