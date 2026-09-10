@@ -6,6 +6,8 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import Counter from "@/components/counter";
 import VisionMission from "@/components/VisionMission";
 import Timeline from "@/components/Timeline";
+import Other from "@/components/other";
+import Footer from "@/components/footer";
 
 
 export default function Home() {
@@ -20,7 +22,8 @@ export default function Home() {
       <Counter />
       <VisionMission />
       <Timeline />
-
+      <Other />
+      <Footer />
 
     </main>
   );
