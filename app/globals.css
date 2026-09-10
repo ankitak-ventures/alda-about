@@ -8,6 +8,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-gold: rgb(241 120 41);
+  --color-alda: rgb(241 120 41);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -72,7 +74,7 @@ body {
 }
 
 .stroke-text:hover {
-  -webkit-text-stroke: 1.5px #f5a623;
+  -webkit-text-stroke: 1.5px #f17829;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -80,7 +82,7 @@ body {
     -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.22);
   }
   .stroke-text:hover {
-    -webkit-text-stroke: 1.5px #f5a623;
+    -webkit-text-stroke: 1.5px #f17829;
   }
 }
 

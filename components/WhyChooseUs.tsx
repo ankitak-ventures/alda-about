@@ -170,8 +170,8 @@ export default function WhyChooseUs() {
                                         >
                                             {/* Icon + Title Header */}
                                             <div className="flex items-center gap-3.5">
-                                                <div className="w-11 h-11 rounded-xl bg-amber-50 border border-amber-200/70 flex items-center justify-center text-amber-500 shadow-xs shrink-0 transition-transform duration-300 hover:scale-110">
-                                                    <Icon className="w-5 h-5 text-[#f5a623]" />
+                                                <div className="w-11 h-11 rounded-xl bg-[#f17829]/10 border border-[#f17829]/30 flex items-center justify-center text-[#f17829] shadow-xs shrink-0 transition-transform duration-300 hover:scale-110">
+                                                    <Icon className="w-5 h-5 text-[#f17829]" />
                                                 </div>
                                                 <h3 className="text-lg font-bold text-slate-900 tracking-tight leading-snug">
                                                     {item.title}
@@ -181,7 +181,7 @@ export default function WhyChooseUs() {
                                             {/* Description with Highlight Badge */}
                                             <p className="text-xs sm:text-[13px] md:text-sm text-gray-600 leading-relaxed font-normal pl-0.5">
                                                 {item.description}{" "}
-                                                <span className="inline-block bg-[#f5a623] text-slate-950 font-bold px-1.5 py-0.5 rounded text-xs shadow-2xs">
+                                                <span className="inline-block bg-[#f17829] text-white font-bold px-1.5 py-0.5 rounded text-xs shadow-2xs">
                                                     {item.highlightWord}
                                                 </span>
                                             </p>
@@ -213,8 +213,8 @@ export default function WhyChooseUs() {
                                         >
                                             {/* Icon + Title Header */}
                                             <div className="flex items-center gap-3.5">
-                                                <div className="w-11 h-11 rounded-xl bg-amber-50 border border-amber-200/70 flex items-center justify-center text-amber-500 shadow-xs shrink-0 transition-transform duration-300 hover:scale-110">
-                                                    <Icon className="w-5 h-5 text-[#f5a623]" />
+                                                <div className="w-11 h-11 rounded-xl bg-[#f17829]/10 border border-[#f17829]/30 flex items-center justify-center text-[#f17829] shadow-xs shrink-0 transition-transform duration-300 hover:scale-110">
+                                                    <Icon className="w-5 h-5 text-[#f17829]" />
                                                 </div>
                                                 <h3 className="text-lg font-bold text-slate-900 tracking-tight leading-snug">
                                                     {item.title}
@@ -224,7 +224,7 @@ export default function WhyChooseUs() {
                                             {/* Description with Highlight Badge */}
                                             <p className="text-xs sm:text-[13px] md:text-sm text-gray-600 leading-relaxed font-normal pl-0.5">
                                                 {item.description}{" "}
-                                                <span className="inline-block bg-[#f5a623] text-slate-950 font-bold px-1.5 py-0.5 rounded text-xs shadow-2xs">
+                                                <span className="inline-block bg-[#f17829] text-white font-bold px-1.5 py-0.5 rounded text-xs shadow-2xs">
                                                     {item.highlightWord}
                                                 </span>
                                             </p>
@@ -262,8 +262,8 @@ export default function WhyChooseUs() {
                             <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
 
                             {/* Floating Quality Badge */}
-                            <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-md border border-amber-100 flex items-center gap-3">
-                                <div className="w-9 h-9 rounded-lg bg-amber-500 flex items-center justify-center text-slate-950 font-black text-sm">
+                            <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-md border border-[#f17829]/20 flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-lg bg-[#f17829] flex items-center justify-center text-white font-black text-sm">
                                     ✓
                                 </div>
                                 <div>

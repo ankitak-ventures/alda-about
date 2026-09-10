@@ -29,7 +29,7 @@ export default function About() {
                                 type="button"
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-xs font-bold tracking-wider uppercase transition-all duration-200 cursor-pointer ${activeTab === tab.id
-                                    ? "bg-amber-500 text-slate-950 shadow-inner"
+                                    ? "bg-[#f17829] text-white shadow-inner"
                                     : "text-gray-700 hover:text-black hover:bg-gray-50"
                                     }`}
                             >
@@ -46,7 +46,7 @@ export default function About() {
                     <div className="max-w-4xl mx-auto text-center space-y-8 sm:space-y-10">
                         {/* Title Centered Directly Under Tab */}
                         <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15]">
-                            <span className="text-[#f5a623]">From Vision to </span>
+                            <span className="text-[#f17829]">From Vision to </span>
                             <span className="text-slate-950">Reality,</span>
                             <span className="block text-slate-950 mt-1">Built with Pride</span>
                         </h2>
@@ -76,7 +76,7 @@ export default function About() {
                 {activeTab === "TEAM" && (
                     <div className="max-w-4xl mx-auto text-center space-y-8 sm:space-y-10">
                         <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15]">
-                            <span className="text-[#f5a623]">The Minds Behind </span>
+                            <span className="text-[#f17829]">The Minds Behind </span>
                             <span className="text-slate-950">ALDA Homes</span>
                         </h2>
                         <p className="text-sm sm:text-base md:text-base text-gray-700 leading-relaxed font-normal">
@@ -96,7 +96,7 @@ export default function About() {
                 {activeTab === "VALUES" && (
                     <div className="max-w-4xl mx-auto text-center space-y-8 sm:space-y-10">
                         <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15]">
-                            <span className="text-[#f5a623]">Our Principles, </span>
+                            <span className="text-[#f17829]">Our Principles, </span>
                             <span className="text-slate-950">Built on Pride</span>
                         </h2>
                         <p className="text-sm sm:text-base md:text-base text-gray-700 leading-relaxed font-normal">
@@ -116,7 +116,7 @@ export default function About() {
                 {activeTab === "AWARDS" && (
                     <div className="max-w-4xl mx-auto text-center space-y-8 sm:space-y-10">
                         <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15]">
-                            <span className="text-[#f5a623]">Honored with </span>
+                            <span className="text-[#f17829]">Honored with </span>
                             <span className="text-slate-950">Excellence</span>
                         </h2>
                         <p className="text-sm sm:text-base md:text-base text-gray-700 leading-relaxed font-normal">

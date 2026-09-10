@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Hero() {
     return (
         // Banner container with reduced height (400px - 420px)
-        <section className="relative h-[400px] md:h-[420px] w-full flex items-center overflow-hidden bg-slate-950 text-white">
+        <section className="relative h-[400px] md:h-[520px] w-full flex items-center overflow-hidden bg-slate-950 text-white">
 
             {/* 1. Background Image with Next.js Image Optimization */}
             <div className="absolute inset-0 z-0">
@@ -28,23 +28,23 @@ export default function Hero() {
 
                     {/* Breadcrumb Navigation */}
                     <nav aria-label="Breadcrumb" className="flex items-center space-x-2 text-xs font-semibold tracking-wider uppercase text-gray-400">
-                        <Link href="/" className="hover:text-amber-400 transition-colors">
+                        <Link href="/" className="hover:text-[#f17829] transition-colors">
                             Home
                         </Link>
                         <span className="text-gray-600">/</span>
-                        <span className="text-amber-500">About Us</span>
+                        <span className="text-[#f17829]">About Us</span>
                     </nav>
 
                     {/* Eyebrow Tag / Sub-title */}
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/25 text-amber-300 text-[11px] font-medium tracking-wide">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f17829]/15 border border-[#f17829]/30 text-[#f17829] text-[11px] font-medium tracking-wide">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#f17829] animate-pulse" />
                         <span>Chennai · Contracting & Real Estate Development</span>
                     </div>
 
                     {/* Main Banner Heading (Reduced font size) */}
                     <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white leading-tight">
                         From Vision to Reality,{" "}
-                        <span className="text-amber-500">
+                        <span className="text-[#f17829]">
                             Built with Pride
                         </span>
                     </h1>
@@ -60,7 +60,7 @@ export default function Hero() {
                     <div className="flex flex-wrap items-center gap-3 pt-2">
                         <button
                             type="button"
-                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold text-slate-950 bg-amber-500 hover:bg-amber-400 shadow-md shadow-amber-500/20 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold text-white bg-[#f17829] hover:bg-[#d9671e] shadow-md shadow-[#f17829]/25 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
                         >
                             <span>Explore Projects</span>
                             <svg className="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

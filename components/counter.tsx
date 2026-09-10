@@ -146,7 +146,7 @@ export default function Counter({
             {/* Subtle warm ambient lighting in the center background */}
             <div
                 aria-hidden="true"
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-amber-500/[0.035] blur-[120px] rounded-full pointer-events-none z-0"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#f17829]/[0.05] blur-[120px] rounded-full pointer-events-none z-0"
             />
 
             <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -155,7 +155,7 @@ export default function Counter({
             Clean, elegant typography without yellow highlighted boxes
            ========================================================================= */}
                 <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12 md:mb-14">
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold tracking-wider uppercase text-amber-400/90 bg-amber-400/10 border border-amber-400/20 mb-4 backdrop-blur-sm">
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold tracking-wider uppercase text-[#f17829] bg-[#f17829]/10 border border-[#f17829]/30 mb-4 backdrop-blur-sm">
                         <span>Milestones & Impact</span>
                     </div>
 
@@ -184,14 +184,14 @@ export default function Counter({
                         return (
                             <div
                                 key={item.id}
-                                className="group relative rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-amber-400/40 p-6 sm:p-7 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg hover:shadow-amber-500/5 backdrop-blur-xs"
+                                className="group relative rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-[#f17829]/50 p-6 sm:p-7 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg hover:shadow-[#f17829]/10 backdrop-blur-xs"
                             >
                                 {/* Subtle golden accent line on top of card on hover */}
-                                <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#f17829]/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                                 {/* Main Counter Number & Suffix */}
                                 <div className="mb-2.5">
-                                    <span className="text-4xl sm:text-4xl md:text-5xl lg:text-[50px] font-black text-[#f5a623] tracking-tight leading-none tabular-nums drop-shadow-sm transition-transform duration-300 inline-block group-hover:scale-105">
+                                    <span className="text-4xl sm:text-4xl md:text-5xl lg:text-[50px] font-black text-[#f17829] tracking-tight leading-none tabular-nums drop-shadow-sm transition-transform duration-300 inline-block group-hover:scale-105">
                                         {formatNumber(currentCount, item.formatCommas)}
                                         {item.suffix}
                                     </span>

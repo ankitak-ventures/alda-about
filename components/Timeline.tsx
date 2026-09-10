@@ -233,19 +233,19 @@ export default function Timeline() {
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
                     <div>
                         {/* Eyebrow Badge */}
-                        <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-amber-50 border border-amber-200/80 text-[#f5a623] text-xs font-extrabold uppercase tracking-[0.2em] mb-2 shadow-2xs">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#f5a623] animate-pulse" />
+                        <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-[#f17829]/10 border border-[#f17829]/30 text-[#f17829] text-xs font-extrabold uppercase tracking-[0.2em] mb-2 shadow-2xs">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#f17829] animate-pulse" />
                             <span>OUR JOURNEY</span>
                         </div>
 
                         {/* Heading */}
                         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#18212e] tracking-tight leading-tight">
                             Building More Than{" "}
-                            <span className="relative inline-block text-[#f5a623]">
+                            <span className="relative inline-block text-[#f17829]">
                                 Homes
                                 <span
                                     aria-hidden="true"
-                                    className="absolute -bottom-1 left-0 w-full h-[2.5px] bg-gradient-to-r from-transparent via-[#f5a623] to-transparent rounded-full"
+                                    className="absolute -bottom-1 left-0 w-full h-[2.5px] bg-gradient-to-r from-transparent via-[#f17829] to-transparent rounded-full"
                                 />
                             </span>
                         </h2>
@@ -262,7 +262,7 @@ export default function Timeline() {
                             disabled={!canScrollLeft}
                             aria-label="Previous milestones"
                             className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-300 shadow-2xs ${canScrollLeft
-                                    ? "bg-white border-slate-300 text-slate-800 hover:border-[#f5a623] hover:text-[#f5a623] hover:bg-amber-50 cursor-pointer shadow-sm"
+                                    ? "bg-white border-slate-300 text-slate-800 hover:border-[#f17829] hover:text-[#f17829] hover:bg-[#f17829]/10 cursor-pointer shadow-sm"
                                     : "bg-slate-100/60 border-slate-200 text-slate-400 cursor-not-allowed"
                                 }`}
                         >
@@ -276,7 +276,7 @@ export default function Timeline() {
                             disabled={!canScrollRight}
                             aria-label="Next milestones"
                             className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-300 shadow-2xs ${canScrollRight
-                                    ? "bg-white border-slate-300 text-slate-800 hover:border-[#f5a623] hover:text-[#f5a623] hover:bg-amber-50 cursor-pointer shadow-sm"
+                                    ? "bg-white border-slate-300 text-slate-800 hover:border-[#f17829] hover:text-[#f17829] hover:bg-[#f17829]/10 cursor-pointer shadow-sm"
                                     : "bg-slate-100/60 border-slate-200 text-slate-400 cursor-not-allowed"
                                 }`}
                         >
@@ -304,7 +304,7 @@ export default function Timeline() {
                         <div className="relative h-[340px] flex items-center">
                             {/* Continuous Center Horizontal Line */}
                             <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1.5px] bg-slate-300" />
-                            <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1.5px] bg-gradient-to-r from-[#f5a623]/20 via-[#f5a623] to-[#f5a623]/20" />
+                            <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1.5px] bg-gradient-to-r from-[#f17829]/20 via-[#f17829] to-[#f17829]/20" />
 
                             {/* Milestones Row */}
                             <div className="relative flex items-center gap-12 sm:gap-16 z-10">
@@ -323,12 +323,12 @@ export default function Timeline() {
                                             {item.isUp && (
                                                 <div className="absolute bottom-[calc(50%+16px)] left-0 right-0 flex flex-col items-center text-center transition-transform duration-300 group-hover:-translate-y-1">
                                                     {/* Minimalist Icon Badge */}
-                                                    <div className="w-8 h-8 rounded-lg bg-amber-50/90 border border-amber-200/80 flex items-center justify-center text-[#f5a623] mb-1.5 shadow-2xs group-hover:bg-[#f5a623] group-hover:text-white transition-all duration-300">
+                                                    <div className="w-8 h-8 rounded-lg bg-[#f17829]/10 border border-[#f17829]/30 flex items-center justify-center text-[#f17829] mb-1.5 shadow-2xs group-hover:bg-[#f17829] group-hover:text-white transition-all duration-300">
                                                         <Icon className="w-4 h-4" />
                                                     </div>
 
                                                     {/* Year */}
-                                                    <p className="text-2xl sm:text-3xl font-black text-[#18212e] tracking-tight group-hover:text-[#f5a623] transition-colors leading-none">
+                                                    <p className="text-2xl sm:text-3xl font-black text-[#18212e] tracking-tight group-hover:text-[#f17829] transition-colors leading-none">
                                                         {item.year}
                                                     </p>
 
@@ -347,7 +347,7 @@ export default function Timeline() {
                                             {/* =========================================================
                                                 CENTER DOT: SMALL, CLEAN & MINIMALIST
                                                ========================================================= */}
-                                            <div className="w-2.5 h-2.5 rounded-full bg-[#f5a623] ring-4 ring-amber-100 group-hover:scale-135 group-hover:ring-[#f5a623]/40 transition-all duration-300 shadow-2xs z-20" />
+                                            <div className="w-2.5 h-2.5 rounded-full bg-[#f17829] ring-4 ring-[#f17829]/20 group-hover:scale-135 group-hover:ring-[#f17829]/40 transition-all duration-300 shadow-2xs z-20" />
 
                                             {/* =========================================================
                                                 LOWER ZONE (Below Line: isUp = false)
@@ -356,12 +356,12 @@ export default function Timeline() {
                                             {!item.isUp && (
                                                 <div className="absolute top-[calc(50%+16px)] left-0 right-0 flex flex-col items-center text-center transition-transform duration-300 group-hover:translate-y-1">
                                                     {/* Minimalist Icon Badge */}
-                                                    <div className="w-8 h-8 rounded-lg bg-amber-50/90 border border-amber-200/80 flex items-center justify-center text-[#f5a623] mb-1.5 shadow-2xs group-hover:bg-[#f5a623] group-hover:text-white transition-all duration-300">
+                                                    <div className="w-8 h-8 rounded-lg bg-[#f17829]/10 border border-[#f17829]/30 flex items-center justify-center text-[#f17829] mb-1.5 shadow-2xs group-hover:bg-[#f17829] group-hover:text-white transition-all duration-300">
                                                         <Icon className="w-4 h-4" />
                                                     </div>
 
                                                     {/* Year */}
-                                                    <p className="text-2xl sm:text-3xl font-black text-[#18212e] tracking-tight group-hover:text-[#f5a623] transition-colors leading-none">
+                                                    <p className="text-2xl sm:text-3xl font-black text-[#18212e] tracking-tight group-hover:text-[#f17829] transition-colors leading-none">
                                                         {item.year}
                                                     </p>
 
