@@ -30,7 +30,7 @@ export default function Scrolling({
     return (
         <section
             aria-label="Brand Motto Scrolling Section"
-            className="relative w-full overflow-hidden bg-white pt-1 sm:pt-2 md:pt-3 pb-6 sm:pb-8 md:pb-10 select-none pause-on-hover border-y border-slate-100 dark:bg-black/40 dark:border-zinc-800"
+            className="relative w-full overflow-hidden bg-white pt-1 sm:pt-2 md:pt-3 pb-6 sm:pb-8 md:pb-10 select-none pause-on-hover border-y border-slate-100"
         >
             {/* Container holding the two opposing marquee rows */}
             <div className="flex flex-col space-y-0.5 sm:space-y-1 md:space-y-1.5">
