@@ -28,14 +28,14 @@ export default function Footer() {
                         </Link>
 
                         {/* Company Tagline Description */}
-                        <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-sm">
+                        <p className="text-xs sm:text-sm text-white leading-relaxed max-w-sm">
                             A Chennai-based contractor and real estate development brand bringing construction expertise and a long-standing family legacy together under one name.
                         </p>
 
                         {/* Contact Details List */}
                         <div className="space-y-3.5 pt-2">
                             {/* Address */}
-                            <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-300">
+                            <div className="flex items-start gap-3 text-xs sm:text-sm text-white">
                                 <div className="w-5 h-5 text-[#f17829] flex-shrink-0 mt-0.5">
                                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -52,7 +52,7 @@ export default function Footer() {
                             <div>
                                 <a
                                     href="tel:+918939960009"
-                                    className="inline-flex items-center gap-3 text-xs sm:text-sm text-slate-300 hover:text-[#f17829] transition-colors"
+                                    className="inline-flex items-center gap-3 text-xs sm:text-sm text-white hover:text-[#f17829] transition-colors"
                                 >
                                     <div className="w-5 h-5 text-[#f17829] flex-shrink-0">
                                         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -85,7 +85,7 @@ export default function Footer() {
                         <h3 className="text-xs font-bold uppercase tracking-[0.25em] text-[#f17829] mb-5">
                             Company
                         </h3>
-                        <ul className="space-y-3 text-xs sm:text-sm text-slate-400">
+                        <ul className="space-y-3 text-xs sm:text-sm text-white">
                             <li>
                                 <a href="#about" className="hover:text-white transition-colors">
                                     About ALDA
@@ -119,7 +119,7 @@ export default function Footer() {
                         <h3 className="text-xs font-bold uppercase tracking-[0.25em] text-[#f17829] mb-5">
                             What We Do
                         </h3>
-                        <ul className="space-y-3 text-xs sm:text-sm text-slate-400">
+                        <ul className="space-y-3 text-xs sm:text-sm text-white">
                             <li>
                                 <a href="#contracting" className="hover:text-white transition-colors">
                                     Contracting
@@ -153,7 +153,7 @@ export default function Footer() {
                         <h3 className="text-xs font-bold uppercase tracking-[0.25em] text-[#f17829] mb-5">
                             Connect
                         </h3>
-                        <ul className="space-y-3 text-xs sm:text-sm text-slate-400">
+                        <ul className="space-y-3 text-xs sm:text-sm text-white">
                             <li>
                                 <a href="#nri" className="hover:text-white transition-colors">
                                     NRI Enquiries
