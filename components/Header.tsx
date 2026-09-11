@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -23,24 +23,32 @@ interface ProjectItem {
 }
 
 export default function Header() {
-    // State for DRA-style full side drawer / mobile menu
+    // State for DRA-style full-screen mega menu
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    // State for hover-delayed dropdowns on desktop
-    const [activeDesktopDropdown, setActiveDesktopDropdown] = useState<string | null>(null);
+    // State for expandable submenus inside mega menu (null by default so nothing is open initially)
+    const [openCategory, setOpenCategory] = useState<string | null>(null);
 
-    // State for mobile accordion toggle
-    const [openMobileSection, setOpenMobileSection] = useState<string | null>(null);
+    // Close menu callback
+    const handleCloseMenu = useCallback(() => {
+        setIsMenuOpen(false);
+    }, []);
 
-    // Filter tab state inside Projects Mega Menu
-    const [projectFilter, setProjectFilter] = useState<"All" | "Ongoing" | "Upcoming">("All");
+    // Toggle menu callback
+    const handleToggleMenu = useCallback(() => {
+        setIsMenuOpen((prev) => !prev);
+    }, []);
 
-    // Close menu when ESC key is pressed or screen resizes
+    // Toggle accordion section
+    const toggleCategory = (category: string) => {
+        setOpenCategory((prev) => (prev === category ? null : category));
+    };
+
+    // Close menu when ESC key is pressed
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
                 setIsMenuOpen(false);
-                setActiveDesktopDropdown(null);
             }
         };
 
@@ -48,16 +56,15 @@ export default function Header() {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, []);
 
-    // Prevent body scroll when side drawer is open
+    // Prevent body scroll when mega menu is open
     useEffect(() => {
         if (isMenuOpen) {
+            const originalOverflow = document.body.style.overflow;
             document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "unset";
+            return () => {
+                document.body.style.overflow = originalOverflow;
+            };
         }
-        return () => {
-            document.body.style.overflow = "unset";
-        };
     }, [isMenuOpen]);
 
     // ALDA's actual projects
@@ -95,12 +102,6 @@ export default function Header() {
             href: "/what-we-do/contracting",
         },
     ];
-
-    // Filtered projects for the mega menu
-    const displayedProjects = aldaProjects.filter((p) => {
-        if (projectFilter === "All") return true;
-        return p.status === projectFilter;
-    });
 
     // ALDA About Us sub-items
     const aboutSubItems: DropdownSubItem[] = [
@@ -150,844 +151,583 @@ export default function Header() {
         },
     ];
 
-    const toggleMobileSection = (section: string) => {
-        setOpenMobileSection(openMobileSection === section ? null : section);
-    };
-
     return (
-        <header className="sticky top-0 z-50 w-full bg-[#FAF8F5]/98 backdrop-blur-md border-b border-stone-200/80 transition-all duration-300">
+        <>
             {/* =========================================================================
-                1. DRA-STYLE TOP UTILITY BAR (Header Top)
+                1. HEADER BAR: ALDA LOGO + HAMBURGER ONLY (Full Width)
                ========================================================================= */}
-            <div className="hidden md:block bg-[#171a23] text-stone-300 text-[11px] py-1.5 px-4 sm:px-6 lg:px-8 border-b border-white/5">
-                <div className="max-w-7xl mx-auto flex items-center justify-between">
-                    <div className="flex items-center gap-6">
-                        <a
-                            href="mailto:info@aldaglobal.com"
-                            className="flex items-center gap-1.5 hover:text-[#f17829] transition-colors"
-                        >
-                            <svg className="w-3.5 h-3.5 text-[#f17829]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <rect width="20" height="16" x="2" y="4" rx="2" strokeWidth="2" />
-                                <path strokeWidth="2" d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                            </svg>
-                            <span>Email: info@aldaglobal.com</span>
-                        </a>
-                        <a
-                            href="tel:+918939960009"
-                            className="flex items-center gap-1.5 hover:text-[#f17829] transition-colors"
-                        >
-                            <svg className="w-3.5 h-3.5 text-[#f17829]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                            </svg>
-                            <span>Call Us: +91 89399 60009</span>
-                        </a>
-                    </div>
-                    <div className="flex items-center gap-6">
-                        <Link href="/nri" className="hover:text-[#f17829] transition-colors">
-                            NRI Desk
-                        </Link>
-                        <Link href="/careers" className="hover:text-[#f17829] transition-colors">
-                            Careers
-                        </Link>
-                        <span className="text-stone-500">|</span>
-                        <span className="text-stone-400 font-medium">Chennai, Tamil Nadu</span>
-                    </div>
-                </div>
-            </div>
-
-            {/* =========================================================================
-                2. MAIN NAVIGATION BAR (DRA Spacing & Layout + ALDA Branding)
-               ========================================================================= */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-20 sm:h-22">
-                    {/* Brand Logo */}
+            <header className="sticky top-0 z-40 w-full bg-[#FAF8F5]/95 backdrop-blur-md border-b border-stone-200/80 transition-all duration-300">
+                <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 flex items-center justify-between h-16 sm:h-18">
+                    {/* Brand Logo (Left) */}
                     <div className="flex-shrink-0">
                         <Link href="/" aria-label="ALDA Home" className="inline-flex items-center group">
-                            <span className="inline-flex items-center rounded-lg bg-[#FAF8F5] px-2 py-1">
+                            <span className="inline-flex items-center rounded-xl bg-[#FAF8F5] px-2 py-1 transition-transform duration-300 group-hover:scale-[1.02]">
                                 <Image
                                     src="/brand/alda-logo.png"
                                     alt="ALDA — Crafting Spaces"
-                                    width={180}
-                                    height={46}
+                                    width={160}
+                                    height={40}
                                     priority
-                                    className="h-9 sm:h-11 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                                    className="h-8 sm:h-9 md:h-10 w-auto object-contain"
                                 />
                             </span>
                         </Link>
                     </div>
 
-                    {/* Desktop Navigation Links */}
-                    <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
-                        {/* 1. Home */}
-                        <Link
-                            href="/"
-                            className="px-3.5 py-2 text-sm font-semibold text-slate-800 hover:text-[#f17829] transition-colors rounded-lg"
-                        >
-                            Home
-                        </Link>
-
-                        {/* 2. About Us (DRA-style Dropdown) */}
-                        <div
-                            className="group/about relative h-full flex items-center"
-                            onMouseEnter={() => setActiveDesktopDropdown("about")}
-                            onMouseLeave={() => setActiveDesktopDropdown(null)}
-                        >
-                            <Link
-                                href="/about"
-                                className="flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-slate-800 hover:text-[#f17829] transition-colors rounded-lg group-hover/about:text-[#f17829]"
-                            >
-                                <span>About Us</span>
-                                {/* DRA-style 3-lines indicator */}
-                                <span
-                                    className="flex flex-col justify-center items-center gap-[2.5px] w-3 h-3 shrink-0 ml-0.5"
-                                    aria-hidden="true"
-                                >
-                                    <span
-                                        className={`h-[1.5px] rounded-full transition-all duration-300 ${
-                                            activeDesktopDropdown === "about"
-                                                ? "w-3 bg-[#f17829]"
-                                                : "w-2.5 bg-stone-400 group-hover/about:w-3 group-hover/about:bg-[#f17829]"
-                                        }`}
-                                    />
-                                    <span
-                                        className={`h-[1.5px] rounded-full transition-all duration-300 ${
-                                            activeDesktopDropdown === "about"
-                                                ? "w-2.5 bg-[#f17829]"
-                                                : "w-1.5 bg-stone-400 group-hover/about:w-2.5 group-hover/about:bg-[#f17829]"
-                                        }`}
-                                    />
-                                    <span
-                                        className={`h-[1.5px] rounded-full transition-all duration-300 ${
-                                            activeDesktopDropdown === "about"
-                                                ? "w-3 bg-[#f17829]"
-                                                : "w-2.5 bg-stone-400 group-hover/about:w-3 group-hover/about:bg-[#f17829]"
-                                        }`}
-                                    />
-                                </span>
-                            </Link>
-
-                            {/* Dropdown Menu - Smooth Transition */}
-                            <div
-                                className={`absolute left-0 top-[calc(100%-8px)] pt-3 w-[460px] z-50 transition-all duration-300 ease-out before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 ${
-                                    activeDesktopDropdown === "about"
-                                        ? "opacity-100 visible translate-y-0 pointer-events-auto"
-                                        : "opacity-0 invisible translate-y-2 pointer-events-none group-hover/about:opacity-100 group-hover/about:visible group-hover/about:translate-y-0 group-hover/about:pointer-events-auto"
-                                }`}
-                            >
-                                <div className="relative">
-                                    {/* DRA-style upward arrow pointer */}
-                                    <div className="absolute -top-1.5 left-7 w-3 h-3 bg-[#f17829] rotate-45 rounded-[2px] z-10" />
-                                    <div className="bg-white rounded-2xl border-t-2 border-[#f17829] border-x border-b border-stone-200/90 shadow-[0_20px_50px_rgba(0,0,0,0.12)] overflow-hidden">
-                                        <div className="p-3.5 grid grid-cols-1 gap-1">
-                                            {aboutSubItems.map((item) => (
-                                                <Link
-                                                    key={item.name}
-                                                    href={item.href}
-                                                    className="group/item flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#f17829]/5 border-l-2 border-transparent hover:border-[#f17829] transition-all duration-200"
-                                                >
-                                                    <div className="flex-1">
-                                                        <div className="flex items-center justify-between">
-                                                            <h4 className="text-sm font-bold text-slate-900 group-hover/item:text-[#f17829] transition-colors">
-                                                                {item.name}
-                                                            </h4>
-                                                            <svg
-                                                                className="w-3.5 h-3.5 text-[#f17829] opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200 shrink-0"
-                                                                fill="none"
-                                                                stroke="currentColor"
-                                                                viewBox="0 0 24 24"
-                                                            >
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 17L17 7M17 7H7M17 7V17" />
-                                                            </svg>
-                                                        </div>
-                                                        <p className="text-xs text-stone-500 mt-0.5 leading-relaxed font-normal">
-                                                            {item.description}
-                                                        </p>
-                                                    </div>
-                                                </Link>
-                                            ))}
-                                        </div>
-
-                                        {/* DRA-style Bottom ViewAll bar */}
-                                        <div className="bg-[#FAF8F5] border-t border-stone-100 px-5 py-2.5 text-center">
-                                            <Link
-                                                href="/about"
-                                                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#f17829] uppercase tracking-wider hover:underline"
-                                            >
-                                                <span>Explore Full About ALDA Overview</span>
-                                                <svg className="w-3 h-3 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                                                </svg>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* 3. What We Do (DRA-style Dropdown) */}
-                        <div
-                            className="group/whatwedo relative h-full flex items-center"
-                            onMouseEnter={() => setActiveDesktopDropdown("whatwedo")}
-                            onMouseLeave={() => setActiveDesktopDropdown(null)}
-                        >
-                            <Link
-                                href="/what-we-do"
-                                className="flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-slate-800 hover:text-[#f17829] transition-colors rounded-lg group-hover/whatwedo:text-[#f17829]"
-                            >
-                                <span>What We Do</span>
-                                {/* DRA-style 3-lines indicator */}
-                                <span
-                                    className="flex flex-col justify-center items-center gap-[2.5px] w-3 h-3 shrink-0 ml-0.5"
-                                    aria-hidden="true"
-                                >
-                                    <span
-                                        className={`h-[1.5px] rounded-full transition-all duration-300 ${
-                                            activeDesktopDropdown === "whatwedo"
-                                                ? "w-3 bg-[#f17829]"
-                                                : "w-2.5 bg-stone-400 group-hover/whatwedo:w-3 group-hover/whatwedo:bg-[#f17829]"
-                                        }`}
-                                    />
-                                    <span
-                                        className={`h-[1.5px] rounded-full transition-all duration-300 ${
-                                            activeDesktopDropdown === "whatwedo"
-                                                ? "w-2.5 bg-[#f17829]"
-                                                : "w-1.5 bg-stone-400 group-hover/whatwedo:w-2.5 group-hover/whatwedo:bg-[#f17829]"
-                                        }`}
-                                    />
-                                    <span
-                                        className={`h-[1.5px] rounded-full transition-all duration-300 ${
-                                            activeDesktopDropdown === "whatwedo"
-                                                ? "w-3 bg-[#f17829]"
-                                                : "w-2.5 bg-stone-400 group-hover/whatwedo:w-3 group-hover/whatwedo:bg-[#f17829]"
-                                        }`}
-                                    />
-                                </span>
-                            </Link>
-
-                            {/* Dropdown Menu - Smooth Transition */}
-                            <div
-                                className={`absolute left-0 top-[calc(100%-8px)] pt-3 w-[450px] z-50 transition-all duration-300 ease-out before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 ${
-                                    activeDesktopDropdown === "whatwedo"
-                                        ? "opacity-100 visible translate-y-0 pointer-events-auto"
-                                        : "opacity-0 invisible translate-y-2 pointer-events-none group-hover/whatwedo:opacity-100 group-hover/whatwedo:visible group-hover/whatwedo:translate-y-0 group-hover/whatwedo:pointer-events-auto"
-                                }`}
-                            >
-                                <div className="relative">
-                                    {/* DRA-style upward arrow pointer */}
-                                    <div className="absolute -top-1.5 left-8 w-3 h-3 bg-[#f17829] rotate-45 rounded-[2px] z-10" />
-                                    <div className="bg-white rounded-2xl border-t-2 border-[#f17829] border-x border-b border-stone-200/90 shadow-[0_20px_50px_rgba(0,0,0,0.12)] overflow-hidden">
-                                        <div className="p-3.5 grid grid-cols-1 gap-1">
-                                            {whatWeDoSubItems.map((item) => (
-                                                <Link
-                                                    key={item.name}
-                                                    href={item.href}
-                                                    className="group/item flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#f17829]/5 border-l-2 border-transparent hover:border-[#f17829] transition-all duration-200"
-                                                >
-                                                    <div className="flex-1">
-                                                        <div className="flex items-center justify-between">
-                                                            <h4 className="text-sm font-bold text-slate-900 group-hover/item:text-[#f17829] transition-colors">
-                                                                {item.name}
-                                                            </h4>
-                                                            <svg
-                                                                className="w-3.5 h-3.5 text-[#f17829] opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200 shrink-0"
-                                                                fill="none"
-                                                                stroke="currentColor"
-                                                                viewBox="0 0 24 24"
-                                                            >
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 17L17 7M17 7H7M17 7V17" />
-                                                            </svg>
-                                                        </div>
-                                                        <p className="text-xs text-stone-500 mt-0.5 leading-relaxed font-normal">
-                                                            {item.description}
-                                                        </p>
-                                                    </div>
-                                                </Link>
-                                            ))}
-                                        </div>
-
-                                        {/* Bottom ViewAll bar */}
-                                        <div className="bg-[#FAF8F5] border-t border-stone-100 px-5 py-2.5 text-center">
-                                            <Link
-                                                href="/what-we-do"
-                                                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#f17829] uppercase tracking-wider hover:underline"
-                                            >
-                                                <span>Explore Contracting & Development Capabilities</span>
-                                                <svg className="w-3 h-3 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                                                </svg>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* 4. PROJECTS (DRA-STYLE PREMIUM MEGA-MENU) */}
-                        <div
-                            className="group/projects relative h-full flex items-center"
-                            onMouseEnter={() => setActiveDesktopDropdown("projects")}
-                            onMouseLeave={() => setActiveDesktopDropdown(null)}
-                        >
-                            <Link
-                                href="/projects"
-                                className="flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-slate-800 hover:text-[#f17829] transition-colors rounded-lg group-hover/projects:text-[#f17829]"
-                            >
-                                <span>Projects</span>
-                                {/* DRA-style 3-lines indicator */}
-                                <span
-                                    className="flex flex-col justify-center items-center gap-[2.5px] w-3 h-3 shrink-0 ml-0.5"
-                                    aria-hidden="true"
-                                >
-                                    <span
-                                        className={`h-[1.5px] rounded-full transition-all duration-300 ${
-                                            activeDesktopDropdown === "projects"
-                                                ? "w-3 bg-[#f17829]"
-                                                : "w-2.5 bg-stone-400 group-hover/projects:w-3 group-hover/projects:bg-[#f17829]"
-                                        }`}
-                                    />
-                                    <span
-                                        className={`h-[1.5px] rounded-full transition-all duration-300 ${
-                                            activeDesktopDropdown === "projects"
-                                                ? "w-2.5 bg-[#f17829]"
-                                                : "w-1.5 bg-stone-400 group-hover/projects:w-2.5 group-hover/projects:bg-[#f17829]"
-                                        }`}
-                                    />
-                                    <span
-                                        className={`h-[1.5px] rounded-full transition-all duration-300 ${
-                                            activeDesktopDropdown === "projects"
-                                                ? "w-3 bg-[#f17829]"
-                                                : "w-2.5 bg-stone-400 group-hover/projects:w-3 group-hover/projects:bg-[#f17829]"
-                                        }`}
-                                    />
-                                </span>
-                            </Link>
-
-                            {/* Large Mega-Menu Container - Smooth Transition */}
-                            <div
-                                className={`absolute left-1/2 -translate-x-[36%] xl:-translate-x-1/2 top-[calc(100%-8px)] pt-3 w-[880px] xl:w-[940px] max-w-[calc(100vw-2rem)] z-50 transition-all duration-300 ease-out before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 ${
-                                    activeDesktopDropdown === "projects"
-                                        ? "opacity-100 visible translate-y-0 pointer-events-auto"
-                                        : "opacity-0 invisible translate-y-2 pointer-events-none group-hover/projects:opacity-100 group-hover/projects:visible group-hover/projects:translate-y-0 group-hover/projects:pointer-events-auto"
-                                }`}
-                            >
-                                <div className="relative">
-                                    {/* DRA-style upward arrow pointer */}
-                                    <div className="absolute -top-1.5 left-[36%] xl:left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-[#f17829] rotate-45 rounded-[2px] z-10" />
-                                    <div className="bg-white rounded-2xl border-t-2 border-[#f17829] border-x border-b border-stone-200/90 shadow-[0_25px_60px_rgba(0,0,0,0.15)] overflow-hidden">
-                                        {/* Top Filter Bar (DRA style buttons) */}
-                                        <div className="bg-[#FAF8F5] border-b border-stone-200 px-6 py-3 flex items-center justify-between">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-xs font-bold uppercase tracking-wider text-stone-500 mr-2">
-                                                    Filter By:
-                                                </span>
-                                                {(["All", "Ongoing", "Upcoming"] as const).map((filter) => (
-                                                    <button
-                                                        key={filter}
-                                                        type="button"
-                                                        onClick={() => setProjectFilter(filter)}
-                                                        className={`px-3 py-1 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
-                                                            projectFilter === filter
-                                                                ? "bg-[#f17829] text-white shadow-xs"
-                                                                : "bg-white text-stone-700 hover:bg-stone-100 border border-stone-200"
-                                                        }`}
-                                                    >
-                                                        {filter} Projects
-                                                    </button>
-                                                ))}
-                                            </div>
-
-                                            <div className="text-xs font-semibold text-stone-500">
-                                                Chennai Residential & Contracting
-                                            </div>
-                                        </div>
-
-                                        {/* Main Mega-Menu Content Grid */}
-                                        <div className="p-6 grid grid-cols-12 gap-6">
-                                            {/* Column 1 & 2: Project Listings (8 cols) */}
-                                            <div className="col-span-8 grid grid-cols-2 gap-4">
-                                                {displayedProjects.map((project) => (
-                                                    <Link
-                                                        key={project.name}
-                                                        href={project.href}
-                                                        className="group/card p-4 rounded-xl border border-stone-100 hover:border-[#f17829]/40 bg-stone-50/40 hover:bg-[#f17829]/5 transition-all duration-200 flex flex-col justify-between"
-                                                    >
-                                                        <div>
-                                                            <div className="flex items-center justify-between gap-2 mb-1.5">
-                                                                <h4 className="text-sm font-bold text-slate-900 group-hover/card:text-[#f17829] transition-colors">
-                                                                    {project.name}
-                                                                </h4>
-                                                                <span
-                                                                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                                                                        project.status === "Ongoing"
-                                                                            ? "bg-[#f17829]/15 text-[#f17829]"
-                                                                            : "bg-blue-50 text-blue-600 border border-blue-200"
-                                                                    }`}
-                                                                >
-                                                                    {project.status}
-                                                                </span>
-                                                            </div>
-
-                                                            <p className="text-xs font-semibold text-stone-600 flex items-center gap-1 mb-2">
-                                                                <svg className="w-3 h-3 text-[#f17829]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                                </svg>
-                                                                {project.location}
-                                                            </p>
-
-                                                            <p className="text-xs text-stone-500 line-clamp-2 leading-relaxed font-normal">
-                                                                {project.description}
-                                                            </p>
-                                                        </div>
-
-                                                        <div className="mt-3 pt-2.5 border-t border-stone-200/60 flex items-center justify-between text-[11px] font-bold text-[#f17829]">
-                                                            <span>View Details</span>
-                                                            <svg className="w-3 h-3 group-hover/card:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                                            </svg>
-                                                        </div>
-                                                    </Link>
-                                                ))}
-                                            </div>
-
-                                            {/* Column 3: Featured Showcase Card (4 cols) */}
-                                            <div className="col-span-4 bg-gradient-to-br from-slate-900 to-[#18212e] text-white p-5 rounded-2xl flex flex-col justify-between shadow-md">
-                                                <div>
-                                                    <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold uppercase tracking-wider bg-[#f17829] text-white mb-2.5">
-                                                        Signature Project
-                                                    </span>
-                                                    <h4 className="text-base font-extrabold text-white tracking-tight leading-snug">
-                                                        ALDA Ayan, Thiruvanmiyur
-                                                    </h4>
-                                                    <p className="text-xs text-stone-300 mt-2 leading-relaxed">
-                                                        3 BHK residences designed for bespoke living near coastal Chennai. Engineered with 1,357+ quality checkpoints.
-                                                    </p>
-                                                </div>
-
-                                                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-                                                    <Link
-                                                        href="/projects/alda-ayan"
-                                                        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#f17829] hover:text-white transition-colors"
-                                                    >
-                                                        <span>Explore ALDA Ayan</span>
-                                                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 17L17 7M17 7H7M17 7V17" />
-                                                        </svg>
-                                                    </Link>
-                                                    <span className="text-[10px] text-stone-400 font-mono">ALDA HOMES</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Bottom Full-Width Banner (DRA Style `viewAll`) */}
-                                        <div className="bg-[#FAF8F5] border-t border-stone-200 px-6 py-3 flex items-center justify-between">
-                                            <span className="text-xs text-stone-600 font-medium">
-                                                Looking for customized land development or joint ventures?
-                                            </span>
-                                            <Link
-                                                href="/projects"
-                                                className="inline-flex items-center gap-2 text-xs font-bold text-[#f17829] uppercase tracking-wider hover:underline"
-                                            >
-                                                <span>View All Projects in Chennai</span>
-                                                <svg className="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                                </svg>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* 5. Locations */}
-                        <Link
-                            href="/locations"
-                            className="px-3.5 py-2 text-sm font-semibold text-slate-800 hover:text-[#f17829] transition-colors rounded-lg"
-                        >
-                            Locations
-                        </Link>
-
-                        {/* 6. NRI */}
-                        <Link
-                            href="/nri"
-                            className="px-3.5 py-2 text-sm font-semibold text-slate-800 hover:text-[#f17829] transition-colors rounded-lg"
-                        >
-                            NRI
-                        </Link>
-
-                        {/* 7. Insights */}
-                        <Link
-                            href="/insights"
-                            className="px-3.5 py-2 text-sm font-semibold text-slate-800 hover:text-[#f17829] transition-colors rounded-lg"
-                        >
-                            Insights
-                        </Link>
-
-                        {/* 8. Contact */}
-                        <Link
-                            href="/contact"
-                            className="px-3.5 py-2 text-sm font-semibold text-slate-800 hover:text-[#f17829] transition-colors rounded-lg"
-                        >
-                            Contact
-                        </Link>
-                    </nav>
-
-                    {/* Right Side: CTA Button (Desktop) + Mobile Menu Toggle (lg:hidden) */}
-                    <div className="flex items-center gap-3">
-                        {/* Enquire CTA Button (Desktop & Tablet) */}
-                        <Link
-                            href="/contact"
-                            className="hidden sm:inline-flex items-center gap-2.5 pl-4 pr-1.5 py-1.5 rounded-full text-xs font-bold text-white bg-slate-900 hover:bg-black border border-slate-800 shadow-md hover:shadow-xl hover:shadow-[#f17829]/15 transition-all duration-300 hover:scale-105 active:scale-95"
-                        >
-                            <span>Enquire Now</span>
-                            <span className="w-7 h-7 rounded-full bg-[#f17829] text-white flex items-center justify-center shadow-xs">
-                                <svg className="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
-                                </svg>
-                            </span>
-                        </Link>
-
-                        {/* Mobile Menu Button - ONLY visible on mobile/tablet (< lg), hidden completely on desktop */}
+                    {/* Hamburger Menu Button (Right) */}
+                    <div className="flex items-center">
                         <button
                             type="button"
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="lg:hidden relative flex flex-col items-center justify-center w-11 h-11 rounded-xl bg-white border border-stone-300 hover:border-[#f17829] text-slate-900 hover:text-[#f17829] shadow-2xs transition-all duration-200 cursor-pointer focus:outline-none"
+                            onClick={handleToggleMenu}
+                            className="group relative flex items-center gap-2.5 sm:gap-3 px-3.5 sm:px-4.5 py-2 rounded-full bg-slate-900 hover:bg-[#f17829] text-white shadow-sm hover:shadow-lg hover:shadow-[#f17829]/20 border border-slate-800 hover:border-[#f17829] transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#f17829] focus:ring-offset-2"
                             aria-label="Toggle Navigation Menu"
                             aria-expanded={isMenuOpen}
                         >
-                            {/* Animated 3-line bars */}
-                            <span
-                                className={`w-4.5 h-0.5 bg-current rounded-full transition-all duration-300 ${
-                                    isMenuOpen ? "rotate-45 translate-y-1.5" : ""
-                                }`}
-                            />
-                            <span
-                                className={`w-4.5 h-0.5 bg-current rounded-full my-1 transition-all duration-300 ${
-                                    isMenuOpen ? "opacity-0" : "opacity-100"
-                                }`}
-                            />
-                            <span
-                                className={`w-4.5 h-0.5 bg-current rounded-full transition-all duration-300 ${
-                                    isMenuOpen ? "-rotate-45 -translate-y-1.5" : ""
-                                }`}
-                            />
-                            <span className="text-[8px] font-extrabold uppercase tracking-widest mt-0.5 leading-none">
-                                {isMenuOpen ? "Close" : "Menu"}
+                            <span className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-stone-200 group-hover:text-white transition-colors select-none">
+                                Menu
+                            </span>
+
+                            {/* Animated 3-line DRA-style Hamburger Icon */}
+                            <span className="relative flex flex-col justify-center items-center gap-1 w-4.5 sm:w-5 h-4 shrink-0" aria-hidden="true">
+                                <span className="w-4.5 h-[2px] bg-white group-hover:bg-white rounded-full transition-all duration-300" />
+                                <span className="w-3.5 h-[2px] bg-[#f17829] group-hover:bg-white rounded-full transition-all duration-300 group-hover:w-4.5" />
+                                <span className="w-4.5 h-[2px] bg-white group-hover:bg-white rounded-full transition-all duration-300" />
                             </span>
                         </button>
                     </div>
                 </div>
-            </div>
+            </header>
 
             {/* =========================================================================
-                3. DRA-STYLE FULL SIDE-MENU DRAWER (Desktop & Tablet & Mobile)
+                2. DRA HOMES-STYLE FULL-SCREEN MEGA MENU OVERLAY
+                (Slides in smoothly and slowly from LEFT to RIGHT)
                ========================================================================= */}
-            {isMenuOpen && (
-                <div className="fixed inset-0 z-[100] overflow-hidden">
-                    {/* Dark Backdrop */}
-                    <div
-                        className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity duration-300"
-                        onClick={() => setIsMenuOpen(false)}
-                    />
+            <div
+                className={`fixed inset-0 z-50 overflow-hidden transition-all duration-700 ease-in-out ${isMenuOpen ? "opacity-100 pointer-events-auto visible" : "opacity-0 pointer-events-none invisible"
+                    }`}
+                role="dialog"
+                aria-modal="true"
+                aria-label="ALDA Mega Menu"
+            >
+                {/* Dark Backdrop */}
+                <div
+                    className={`fixed inset-0 bg-slate-950/75 backdrop-blur-md transition-opacity duration-700 ease-in-out ${isMenuOpen ? "opacity-100" : "opacity-0"
+                        }`}
+                    onClick={handleCloseMenu}
+                />
 
-                    {/* Slide-in Container from Right */}
-                    <div className="absolute inset-y-0 right-0 max-w-full flex">
-                        <div className="relative w-screen max-w-2xl bg-[#FAF8F5] text-slate-900 shadow-2xl flex flex-col justify-between overflow-y-auto border-l border-stone-200">
-                            {/* Drawer Header */}
-                            <div className="p-6 sm:p-8 flex items-center justify-between border-b border-stone-200 bg-white">
-                                <Link href="/" onClick={() => setIsMenuOpen(false)}>
-                                    <Image
-                                        src="/brand/alda-logo.png"
-                                        alt="ALDA Logo"
-                                        width={160}
-                                        height={40}
-                                        className="h-9 w-auto object-contain"
-                                    />
-                                </Link>
+                {/* Main Full-Screen Mega Menu Drawer Panel */}
+                <div
+                    className={`relative w-full h-full bg-[#FAF8F5] flex flex-col z-10 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] transform will-change-transform ${isMenuOpen ? "translate-x-0" : "-translate-x-full"
+                        }`}
+                >
+                    {/* Top Bar of the Mega Menu (Full Width) */}
+                    <div className="flex-shrink-0 bg-[#FAF8F5] border-b border-stone-200 px-4 sm:px-8 lg:px-12 xl:px-16 py-3 sm:py-3.5">
+                        <div className="w-full flex items-center justify-between">
+                            {/* ALDA Logo in Menu */}
+                            <Link href="/" onClick={handleCloseMenu} className="inline-flex items-center group">
+                                <Image
+                                    src="/brand/alda-logo.png"
+                                    alt="ALDA Logo"
+                                    width={140}
+                                    height={36}
+                                    className="h-7 sm:h-8 w-auto object-contain transition-transform group-hover:scale-105"
+                                />
+                            </Link>
 
-                                <button
-                                    type="button"
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-stone-300 hover:border-[#f17829] text-xs font-bold uppercase tracking-wider text-slate-800 hover:text-[#f17829] transition-colors cursor-pointer"
-                                >
-                                    <span>Close</span>
-                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
+                            {/* Center Tagline / Coordinates */}
+                            <div className="hidden md:flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-widest text-stone-500">
+                                <span className="w-2 h-2 rounded-full bg-[#f17829] animate-pulse" />
+                                <span>Crafting Spaces · Chennai & Global</span>
                             </div>
 
-                            {/* Drawer Body: 2 Columns on sm+, Single Column on mobile */}
-                            <div className="p-6 sm:p-8 flex-1 grid grid-cols-1 sm:grid-cols-2 gap-8 divide-y sm:divide-y-0 sm:divide-x divide-stone-200">
-                                {/* Left Column: Major Project Categories (DRA menu-remover style) */}
-                                <div className="space-y-6 pt-2 sm:pt-0 sm:pr-6">
-                                    <div>
-                                        <span className="text-[11px] font-bold uppercase tracking-widest text-[#f17829] block mb-2">
-                                            Projects & Living
+                            {/* Close Button */}
+                            <button
+                                type="button"
+                                onClick={handleCloseMenu}
+                                className="group flex items-center gap-2.5 px-3.5 sm:px-4 py-1.5 rounded-full border border-stone-300 hover:border-[#f17829] bg-white hover:bg-[#f17829] text-slate-800 hover:text-white transition-all duration-300 cursor-pointer shadow-2xs"
+                                aria-label="Close navigation menu"
+                            >
+                                <span className="text-xs font-extrabold uppercase tracking-widest transition-colors">Close</span>
+                                <span className="w-5.5 h-5.5 rounded-full bg-slate-100 group-hover:bg-white/20 text-slate-700 group-hover:text-white flex items-center justify-center transition-colors">
+                                    <svg className="w-3.5 h-3.5 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Mega Menu Content (Responsive Grid with Balanced Vertical Alignment) */}
+                    <div className="flex-1 overflow-y-auto overflow-x-hidden">
+                        <div className="w-full min-h-full grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 divide-stone-200">
+                            {/* =========================================================
+                                COLUMN 1 (On Desktop: Left Column / On Mobile: Order 2)
+                                Showcase & Projects (Warm Editorial Light `#FAF8F5`)
+                               ========================================================= */}
+                            <div className="order-2 lg:order-1 lg:col-span-5 xl:col-span-5 p-5 sm:p-7 lg:p-8 xl:p-12 bg-[#FAF8F5] lg:border-r-4 lg:border-r-[#f17829] flex flex-col justify-center">
+                                <div className="w-full max-w-lg xl:max-w-xl mx-auto space-y-5 lg:space-y-6">
+                                    {/* 1. Category Heading & Project Links */}
+                                    <div className="border-b border-stone-200 pb-4">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-[10px] font-black uppercase tracking-widest text-[#f17829]">
+                                                ALDA Communities
+                                            </span>
+                                            <Link
+                                                href="/projects"
+                                                onClick={handleCloseMenu}
+                                                className="text-[11px] font-bold text-[#f17829] hover:underline"
+                                            >
+                                                View All →
+                                            </Link>
+                                        </div>
+                                        <h2 className="text-xl sm:text-2xl xl:text-3xl font-light text-slate-900 tracking-tight mb-3">
+                                            Residential Developments
+                                        </h2>
+
+                                        {/* Mini Cards for ALDA Projects */}
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2.5">
+                                            {aldaProjects.slice(0, 3).map((project) => (
+                                                <Link
+                                                    key={project.name}
+                                                    href={project.href}
+                                                    onClick={handleCloseMenu}
+                                                    className="group/proj p-2.5 rounded-xl bg-white border border-stone-200 hover:border-[#f17829] transition-all duration-200 flex items-center justify-between shadow-2xs hover:shadow-sm"
+                                                >
+                                                    <div>
+                                                        <h4 className="text-xs sm:text-sm font-bold text-slate-900 group-hover/proj:text-[#f17829] transition-colors">
+                                                            {project.name}
+                                                        </h4>
+                                                        <p className="text-[11px] text-stone-500 mt-0.5">
+                                                            {project.location}
+                                                        </p>
+                                                    </div>
+                                                    <span
+                                                        className={`text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shrink-0 ${project.status === "Ongoing"
+                                                            ? "bg-[#f17829]/15 text-[#f17829]"
+                                                            : "bg-blue-50 text-blue-600 border border-blue-200"
+                                                            }`}
+                                                    >
+                                                        {project.status}
+                                                    </span>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* 2. Contracting & Capabilities Section */}
+                                    <div className="border-b border-stone-200 pb-4">
+                                        <span className="text-[10px] font-black uppercase tracking-widest text-[#f17829] block mb-1">
+                                            Turnkey Execution
                                         </span>
-                                        <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-3">
-                                            ALDA Communities
-                                        </h3>
-                                        <ul className="space-y-2.5 text-sm font-semibold text-slate-700">
-                                            <li>
+                                        <h2 className="text-xl sm:text-2xl xl:text-3xl font-light text-slate-900 tracking-tight mb-2.5">
+                                            Contracting Services
+                                        </h2>
+                                        <div className="flex flex-wrap gap-2 text-[11px] font-bold uppercase tracking-wider">
+                                            <Link
+                                                href="/what-we-do/contracting"
+                                                onClick={handleCloseMenu}
+                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-stone-200 hover:border-[#f17829] hover:text-[#f17829] text-slate-700 transition-colors shadow-2xs"
+                                            >
+                                                <span>Residential Construction</span>
+                                                <span className="text-[#f17829]">→</span>
+                                            </Link>
+                                            <Link
+                                                href="/what-we-do/contracting"
+                                                onClick={handleCloseMenu}
+                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-stone-200 hover:border-[#f17829] hover:text-[#f17829] text-slate-700 transition-colors shadow-2xs"
+                                            >
+                                                <span>Commercial & Turnkey</span>
+                                                <span className="text-[#f17829]">→</span>
+                                            </Link>
+                                        </div>
+                                    </div>
+
+                                    {/* 3. Featured Showcase Project Card */}
+                                    <div className="p-4 rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white shadow-lg relative overflow-hidden group">
+                                        <div className="relative z-10">
+                                            <div className="flex items-center justify-between mb-1.5">
+                                                <span className="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[#f17829] text-white">
+                                                    Featured Project
+                                                </span>
+                                                <span className="text-[11px] text-stone-400 font-mono">Thiruvanmiyur</span>
+                                            </div>
+                                            <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                                                ALDA Ayan Residences
+                                            </h3>
+                                            <p className="text-xs text-stone-300 mt-1 leading-relaxed font-normal line-clamp-2">
+                                                3 BHK luxury residences designed around cross-ventilation, coastal breezes, and 1,357+ stringent quality checkpoints.
+                                            </p>
+                                            <div className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between">
                                                 <Link
                                                     href="/projects/alda-ayan"
-                                                    onClick={() => setIsMenuOpen(false)}
-                                                    className="flex items-center justify-between p-2 rounded-lg hover:bg-white hover:text-[#f17829] transition-colors"
+                                                    onClick={handleCloseMenu}
+                                                    className="inline-flex items-center gap-1 text-xs font-bold text-[#f17829] hover:text-white transition-colors"
                                                 >
-                                                    <span>ALDA Ayan — Thiruvanmiyur</span>
-                                                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f17829]/15 text-[#f17829] font-bold">
-                                                        Ongoing
-                                                    </span>
+                                                    <span>Explore Details</span>
+                                                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 17L17 7M17 7H7M17 7V17" />
+                                                    </svg>
                                                 </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    href="/projects/alda-aran"
-                                                    onClick={() => setIsMenuOpen(false)}
-                                                    className="flex items-center justify-between p-2 rounded-lg hover:bg-white hover:text-[#f17829] transition-colors"
-                                                >
-                                                    <span>ALDA Aran — Chennai</span>
-                                                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f17829]/15 text-[#f17829] font-bold">
-                                                        Ongoing
-                                                    </span>
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    href="/upcoming-projects"
-                                                    onClick={() => setIsMenuOpen(false)}
-                                                    className="flex items-center justify-between p-2 rounded-lg hover:bg-white hover:text-[#f17829] transition-colors"
-                                                >
-                                                    <span>Upcoming Projects</span>
-                                                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 font-bold border border-blue-200">
-                                                        Pipeline
-                                                    </span>
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    href="/what-we-do/contracting"
-                                                    onClick={() => setIsMenuOpen(false)}
-                                                    className="flex items-center justify-between p-2 rounded-lg hover:bg-white hover:text-[#f17829] transition-colors"
-                                                >
-                                                    <span>Contracting & Turnkey Build</span>
-                                                    <span className="text-xs text-stone-400">→</span>
-                                                </Link>
-                                            </li>
-                                        </ul>
+                                                <span className="text-[10px] text-stone-400 font-mono">Ongoing</span>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    {/* Direct Call Box (DRA style `makeaCall`) */}
-                                    <div className="bg-white p-4 rounded-xl border border-stone-200 shadow-2xs">
-                                        <h5 className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1">
-                                            Make a Direct Call
-                                        </h5>
-                                        <a
-                                            href="tel:+918939960009"
-                                            className="text-base sm:text-lg font-black text-slate-900 hover:text-[#f17829] transition-colors block"
-                                        >
-                                            +91 89399 60009
-                                        </a>
-                                        <p className="text-xs text-stone-500 mt-1">
-                                            Adyar, Chennai · Mon to Sat, 9am - 6pm
-                                        </p>
-                                    </div>
-
-                                    {/* Social Links */}
-                                    <div>
-                                        <h5 className="text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-2">
-                                            Connect with ALDA
-                                        </h5>
-                                        <div className="flex items-center gap-3">
-                                            <a
-                                                href="https://facebook.com"
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="w-9 h-9 rounded-full bg-white border border-stone-200 hover:border-[#f17829] text-slate-700 hover:text-[#f17829] flex items-center justify-center transition-colors shadow-2xs"
-                                                aria-label="Facebook"
-                                            >
-                                                f
-                                            </a>
-                                            <a
-                                                href="https://instagram.com"
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="w-9 h-9 rounded-full bg-white border border-stone-200 hover:border-[#f17829] text-slate-700 hover:text-[#f17829] flex items-center justify-center transition-colors shadow-2xs"
-                                                aria-label="Instagram"
-                                            >
-                                                in
-                                            </a>
-                                            <a
-                                                href="https://linkedin.com"
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="w-9 h-9 rounded-full bg-white border border-stone-200 hover:border-[#f17829] text-slate-700 hover:text-[#f17829] flex items-center justify-center transition-colors shadow-2xs"
-                                                aria-label="LinkedIn"
-                                            >
-                                                li
-                                            </a>
+                                    {/* 4. Make a Call Box */}
+                                    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-stone-200 shadow-xs">
+                                        <div className="flex items-start justify-between">
+                                            <div>
+                                                <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#f17829] block mb-0.5">
+                                                    Make a Call
+                                                </span>
+                                                <a
+                                                    href="tel:+918939960009"
+                                                    className="text-lg sm:text-xl font-black text-slate-900 hover:text-[#f17829] transition-colors block tracking-tight"
+                                                >
+                                                    +91 89399 60009
+                                                </a>
+                                                <p className="text-[11px] text-stone-500 mt-0.5">
+                                                    No. 72, 28th Cross St, Indira Nagar, Adyar, Chennai
+                                                </p>
+                                                <p className="text-[10px] text-stone-400 mt-0.5">
+                                                    Mon to Sat · 9:00 AM – 6:00 PM IST
+                                                </p>
+                                            </div>
+                                            <div className="w-8 h-8 rounded-lg bg-[#f17829]/10 text-[#f17829] flex items-center justify-center shrink-0">
+                                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                {/* Right Column: Full Nav Links (DRA side-navbar-nav style) */}
-                                <div className="pt-6 sm:pt-0 sm:pl-6 flex flex-col justify-between">
-                                    <ul className="space-y-1 text-sm font-bold text-slate-800">
-                                        <li>
-                                            <Link
-                                                href="/"
-                                                onClick={() => setIsMenuOpen(false)}
-                                                className="block p-2 rounded-lg hover:bg-white hover:text-[#f17829] transition-colors"
-                                            >
-                                                Home
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <div className="flex items-center justify-between p-2 rounded-lg hover:bg-white">
-                                                <Link
-                                                    href="/about"
-                                                    onClick={() => setIsMenuOpen(false)}
-                                                    className="hover:text-[#f17829] transition-colors"
-                                                >
-                                                    About Us
-                                                </Link>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => toggleMobileSection("about")}
-                                                    className="text-xs text-stone-500 font-normal px-2 py-0.5 rounded border border-stone-200 hover:border-[#f17829]"
-                                                >
-                                                    {openMobileSection === "about" ? "−" : "+"}
-                                                </button>
-                                            </div>
-                                            {openMobileSection === "about" && (
-                                                <ul className="pl-4 py-1.5 space-y-1 text-xs font-medium text-stone-600">
-                                                    {aboutSubItems.map((s) => (
-                                                        <li key={s.name}>
-                                                            <Link
-                                                                href={s.href}
-                                                                onClick={() => setIsMenuOpen(false)}
-                                                                className="block py-1 hover:text-[#f17829] transition-colors"
-                                                            >
-                                                                {s.name}
-                                                            </Link>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            )}
-                                        </li>
-                                        <li>
-                                            <div className="flex items-center justify-between p-2 rounded-lg hover:bg-white">
-                                                <Link
-                                                    href="/what-we-do"
-                                                    onClick={() => setIsMenuOpen(false)}
-                                                    className="hover:text-[#f17829] transition-colors"
-                                                >
-                                                    What We Do
-                                                </Link>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => toggleMobileSection("whatwedo")}
-                                                    className="text-xs text-stone-500 font-normal px-2 py-0.5 rounded border border-stone-200 hover:border-[#f17829]"
-                                                >
-                                                    {openMobileSection === "whatwedo" ? "−" : "+"}
-                                                </button>
-                                            </div>
-                                            {openMobileSection === "whatwedo" && (
-                                                <ul className="pl-4 py-1.5 space-y-1 text-xs font-medium text-stone-600">
-                                                    {whatWeDoSubItems.map((s) => (
-                                                        <li key={s.name}>
-                                                            <Link
-                                                                href={s.href}
-                                                                onClick={() => setIsMenuOpen(false)}
-                                                                className="block py-1 hover:text-[#f17829] transition-colors"
-                                                            >
-                                                                {s.name}
-                                                            </Link>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            )}
-                                        </li>
-                                        <li>
-                                            <Link
-                                                href="/projects"
-                                                onClick={() => setIsMenuOpen(false)}
-                                                className="block p-2 rounded-lg hover:bg-white hover:text-[#f17829] transition-colors"
-                                            >
-                                                All Projects
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link
-                                                href="/locations"
-                                                onClick={() => setIsMenuOpen(false)}
-                                                className="block p-2 rounded-lg hover:bg-white hover:text-[#f17829] transition-colors"
-                                            >
-                                                Locations
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link
-                                                href="/nri"
-                                                onClick={() => setIsMenuOpen(false)}
-                                                className="block p-2 rounded-lg hover:bg-white hover:text-[#f17829] transition-colors"
-                                            >
-                                                NRI Services
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link
-                                                href="/insights"
-                                                onClick={() => setIsMenuOpen(false)}
-                                                className="block p-2 rounded-lg hover:bg-white hover:text-[#f17829] transition-colors"
-                                            >
-                                                Insights & News
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link
-                                                href="/careers"
-                                                onClick={() => setIsMenuOpen(false)}
-                                                className="block p-2 rounded-lg hover:bg-white hover:text-[#f17829] transition-colors"
-                                            >
-                                                Careers
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link
-                                                href="/contact"
-                                                onClick={() => setIsMenuOpen(false)}
-                                                className="block p-2 rounded-lg hover:bg-white hover:text-[#f17829] transition-colors"
-                                            >
-                                                Contact Us
-                                            </Link>
-                                        </li>
-                                    </ul>
-
-                                    <div className="pt-6">
-                                        <Link
-                                            href="/contact"
-                                            onClick={() => setIsMenuOpen(false)}
-                                            className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-full bg-[#f17829] hover:bg-[#d9671e] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#f17829]/25 transition-all duration-200 cursor-pointer"
-                                        >
-                                            <span>Enquire Now</span>
-                                            <svg className="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
-                                            </svg>
-                                        </Link>
-                                    </div>
-                                </div>
                             </div>
 
-                            {/* Drawer Footer */}
-                            <div className="p-4 bg-white border-t border-stone-200 text-center text-xs text-stone-500">
-                                © {new Date().getFullYear()} ALDA Homes · Crafting Spaces with Pride
+                            {/* =========================================================
+                                COLUMN 2 (On Desktop: Right Column / On Mobile: Order 1)
+                                Primary Navigation & CTA (Deep Architectural Charcoal `#12151c`)
+                               ========================================================= */}
+                            <div className="order-1 lg:order-2 lg:col-span-7 xl:col-span-7 p-5 sm:p-7 lg:p-8 xl:p-14 bg-[#12151c] text-white flex flex-col justify-center">
+                                <div className="w-full max-w-lg xl:max-w-2xl mx-auto space-y-6">
+                                    {/* Primary Navigation Tree (DRA side-navbar-nav with Balanced Spacing) */}
+                                    <nav className="space-y-1 sm:space-y-1.5">
+                                        {/* 1. Home */}
+                                        <div className="border-b border-white/5 pb-1 sm:pb-1.5">
+                                            <Link
+                                                href="/"
+                                                onClick={handleCloseMenu}
+                                                className="group flex items-center justify-between py-1.5 sm:py-2 text-xl sm:text-2xl xl:text-[28px] font-light text-stone-200 hover:text-[#f17829] transition-colors"
+                                            >
+                                                <span className="group-hover:translate-x-2 transition-transform duration-200">
+                                                    Home
+                                                </span>
+                                                <span className="text-xs text-stone-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    01
+                                                </span>
+                                            </Link>
+                                        </div>
+
+                                        {/* 2. About Us (Accordion - Closed by default) */}
+                                        <div className="border-b border-white/5 pb-1 sm:pb-1.5">
+                                            <div className="flex items-center justify-between py-1.5 sm:py-2">
+                                                <Link
+                                                    href="/about"
+                                                    onClick={handleCloseMenu}
+                                                    className="group text-xl sm:text-2xl xl:text-[28px] font-light text-stone-200 hover:text-[#f17829] transition-colors flex-1"
+                                                >
+                                                    <span className="group-hover:translate-x-2 inline-block transition-transform duration-200">
+                                                        About Us
+                                                    </span>
+                                                </Link>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => toggleCategory("about")}
+                                                    className="p-1.5 text-stone-400 hover:text-[#f17829] cursor-pointer"
+                                                    aria-label="Toggle About Us menu"
+                                                    aria-expanded={openCategory === "about"}
+                                                >
+                                                    <svg
+                                                        className={`w-5 h-5 transition-transform duration-300 ${openCategory === "about" ? "rotate-180 text-[#f17829]" : ""
+                                                            }`}
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                    >
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+
+                                            <div
+                                                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
+                                                    openCategory === "about"
+                                                        ? "grid-rows-[1fr] opacity-100 my-1.5"
+                                                        : "grid-rows-[0fr] opacity-0 my-0 pointer-events-none"
+                                                }`}
+                                            >
+                                                <div className="overflow-hidden">
+                                                    <div className="pl-3 sm:pl-4 pr-2 py-2 sm:py-3 space-y-2 bg-white/5 rounded-xl">
+                                                        {aboutSubItems.map((item) => (
+                                                            <Link
+                                                                key={item.name}
+                                                                href={item.href}
+                                                                onClick={handleCloseMenu}
+                                                                className="group/sub flex items-center justify-between text-xs sm:text-sm text-stone-300 hover:text-[#f17829] transition-colors py-1"
+                                                            >
+                                                                <span>{item.name}</span>
+                                                                <span className="text-xs text-stone-500 group-hover/sub:text-[#f17829] transition-colors">
+                                                                    →
+                                                                </span>
+                                                            </Link>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* 3. What We Do (Accordion - Closed by default) */}
+                                        <div className="border-b border-white/5 pb-1 sm:pb-1.5">
+                                            <div className="flex items-center justify-between py-1.5 sm:py-2">
+                                                <Link
+                                                    href="/what-we-do"
+                                                    onClick={handleCloseMenu}
+                                                    className="group text-xl sm:text-2xl xl:text-[28px] font-light text-stone-200 hover:text-[#f17829] transition-colors flex-1"
+                                                >
+                                                    <span className="group-hover:translate-x-2 inline-block transition-transform duration-200">
+                                                        What We Do
+                                                    </span>
+                                                </Link>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => toggleCategory("whatwedo")}
+                                                    className="p-1.5 text-stone-400 hover:text-[#f17829] cursor-pointer"
+                                                    aria-label="Toggle What We Do menu"
+                                                    aria-expanded={openCategory === "whatwedo"}
+                                                >
+                                                    <svg
+                                                        className={`w-5 h-5 transition-transform duration-300 ${openCategory === "whatwedo" ? "rotate-180 text-[#f17829]" : ""
+                                                            }`}
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                    >
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+
+                                            <div
+                                                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
+                                                    openCategory === "whatwedo"
+                                                        ? "grid-rows-[1fr] opacity-100 my-1.5"
+                                                        : "grid-rows-[0fr] opacity-0 my-0 pointer-events-none"
+                                                }`}
+                                            >
+                                                <div className="overflow-hidden">
+                                                    <div className="pl-3 sm:pl-4 pr-2 py-2 sm:py-3 space-y-2 bg-white/5 rounded-xl">
+                                                        {whatWeDoSubItems.map((item) => (
+                                                            <Link
+                                                                key={item.name}
+                                                                href={item.href}
+                                                                onClick={handleCloseMenu}
+                                                                className="group/sub flex items-center justify-between text-xs sm:text-sm text-stone-300 hover:text-[#f17829] transition-colors py-1"
+                                                            >
+                                                                <span>{item.name}</span>
+                                                                <span className="text-xs text-stone-500 group-hover/sub:text-[#f17829] transition-colors">
+                                                                    →
+                                                                </span>
+                                                            </Link>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* 4. Projects (Accordion - Closed by default) */}
+                                        <div className="border-b border-white/5 pb-1 sm:pb-1.5">
+                                            <div className="flex items-center justify-between py-1.5 sm:py-2">
+                                                <Link
+                                                    href="/projects"
+                                                    onClick={handleCloseMenu}
+                                                    className="group text-xl sm:text-2xl xl:text-[28px] font-light text-stone-200 hover:text-[#f17829] transition-colors flex-1"
+                                                >
+                                                    <span className="group-hover:translate-x-2 inline-block transition-transform duration-200">
+                                                        Projects
+                                                    </span>
+                                                </Link>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => toggleCategory("projects")}
+                                                    className="p-1.5 text-stone-400 hover:text-[#f17829] cursor-pointer"
+                                                    aria-label="Toggle Projects menu"
+                                                    aria-expanded={openCategory === "projects"}
+                                                >
+                                                    <svg
+                                                        className={`w-5 h-5 transition-transform duration-300 ${openCategory === "projects" ? "rotate-180 text-[#f17829]" : ""
+                                                            }`}
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                    >
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+
+                                            <div
+                                                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
+                                                    openCategory === "projects"
+                                                        ? "grid-rows-[1fr] opacity-100 my-1.5"
+                                                        : "grid-rows-[0fr] opacity-0 my-0 pointer-events-none"
+                                                }`}
+                                            >
+                                                <div className="overflow-hidden">
+                                                    <div className="pl-3 sm:pl-4 pr-2 py-2 sm:py-3 space-y-2 bg-white/5 rounded-xl">
+                                                        <Link
+                                                            href="/projects"
+                                                            onClick={handleCloseMenu}
+                                                            className="group/sub flex items-center justify-between text-xs sm:text-sm text-stone-300 hover:text-[#f17829] transition-colors py-1"
+                                                        >
+                                                            <span>All Projects Overview</span>
+                                                            <span className="text-xs text-stone-500 group-hover/sub:text-[#f17829]">→</span>
+                                                        </Link>
+                                                        {aldaProjects.map((p) => (
+                                                            <Link
+                                                                key={p.name}
+                                                                href={p.href}
+                                                                onClick={handleCloseMenu}
+                                                                className="group/sub flex items-center justify-between text-xs sm:text-sm text-stone-300 hover:text-[#f17829] transition-colors py-1"
+                                                            >
+                                                                <span>{p.name}</span>
+                                                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#f17829]/20 text-[#f17829] font-mono">
+                                                                    {p.status}
+                                                                </span>
+                                                            </Link>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* 5. Locations */}
+                                        <div className="border-b border-white/5 pb-1 sm:pb-1.5">
+                                            <Link
+                                                href="/locations"
+                                                onClick={handleCloseMenu}
+                                                className="group flex items-center justify-between py-1.5 sm:py-2 text-xl sm:text-2xl xl:text-[28px] font-light text-stone-200 hover:text-[#f17829] transition-colors"
+                                            >
+                                                <span className="group-hover:translate-x-2 transition-transform duration-200">
+                                                    Locations
+                                                </span>
+                                                <span className="text-xs text-stone-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    05
+                                                </span>
+                                            </Link>
+                                        </div>
+
+                                        {/* 6. NRI Desk */}
+                                        <div className="border-b border-white/5 pb-1 sm:pb-1.5">
+                                            <Link
+                                                href="/nri"
+                                                onClick={handleCloseMenu}
+                                                className="group flex items-center justify-between py-1.5 sm:py-2 text-xl sm:text-2xl xl:text-[28px] font-light text-stone-200 hover:text-[#f17829] transition-colors"
+                                            >
+                                                <span className="group-hover:translate-x-2 transition-transform duration-200">
+                                                    NRI Desk
+                                                </span>
+                                                <span className="text-xs text-stone-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    06
+                                                </span>
+                                            </Link>
+                                        </div>
+
+                                        {/* 7. Insights */}
+                                        <div className="border-b border-white/5 pb-1 sm:pb-1.5">
+                                            <Link
+                                                href="/insights"
+                                                onClick={handleCloseMenu}
+                                                className="group flex items-center justify-between py-1.5 sm:py-2 text-xl sm:text-2xl xl:text-[28px] font-light text-stone-200 hover:text-[#f17829] transition-colors"
+                                            >
+                                                <span className="group-hover:translate-x-2 transition-transform duration-200">
+                                                    Insights & News
+                                                </span>
+                                                <span className="text-xs text-stone-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    07
+                                                </span>
+                                            </Link>
+                                        </div>
+
+                                        {/* 8. Careers */}
+                                        <div className="border-b border-white/5 pb-1 sm:pb-1.5">
+                                            <Link
+                                                href="/careers"
+                                                onClick={handleCloseMenu}
+                                                className="group flex items-center justify-between py-1.5 sm:py-2 text-xl sm:text-2xl xl:text-[28px] font-light text-stone-200 hover:text-[#f17829] transition-colors"
+                                            >
+                                                <span className="group-hover:translate-x-2 transition-transform duration-200">
+                                                    Careers
+                                                </span>
+                                                <span className="text-xs text-stone-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    08
+                                                </span>
+                                            </Link>
+                                        </div>
+
+                                        {/* 9. Contact */}
+                                        <div className="border-b border-white/5 pb-1 sm:pb-1.5">
+                                            <Link
+                                                href="/contact"
+                                                onClick={handleCloseMenu}
+                                                className="group flex items-center justify-between py-1.5 sm:py-2 text-xl sm:text-2xl xl:text-[28px] font-light text-stone-200 hover:text-[#f17829] transition-colors"
+                                            >
+                                                <span className="group-hover:translate-x-2 transition-transform duration-200">
+                                                    Contact Us
+                                                </span>
+                                                <span className="text-xs text-stone-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    09
+                                                </span>
+                                            </Link>
+                                        </div>
+                                    </nav>
+
+                                    {/* Actions Row: Enquire Button + Email (Directly Connected) */}
+                                    <div className="pt-2 sm:pt-4 border-t border-white/0 space-y-3">
+                                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                                            {/* Primary Enquiry Button */}
+                                            <Link
+                                                href="/contact"
+                                                onClick={handleCloseMenu}
+                                                className="flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-full bg-[#f17829] hover:bg-[#d9671e] text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-[#f17829]/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-center"
+                                            >
+                                                <span>Enquire Now</span>
+                                                <svg className="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
+                                                </svg>
+                                            </Link>
+
+                                            {/* Direct Email Link */}
+                                            <a
+                                                href="mailto:info@aldaglobal.com"
+                                                className="flex items-center justify-center gap-2 py-3 px-5 rounded-full border border-white/20 hover:border-[#f17829] bg-white/5 hover:bg-[#f17829]/10 text-stone-200 hover:text-[#f17829] text-xs font-semibold tracking-wide transition-colors"
+                                            >
+                                                <svg className="w-4 h-4 text-[#f17829]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <rect width="20" height="16" x="2" y="4" rx="2" strokeWidth="2" />
+                                                    <path strokeWidth="2" d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                                                </svg>
+                                                <span>info@aldaglobal.com</span>
+                                            </a>
+                                        </div>
+
+                                        {/* Subtle Tagline */}
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            )}
-        </header>
+            </div>
+        </>
     );
 }
