@@ -1,10 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function About() {
     // State to track the currently selected tab
     const [activeTab, setActiveTab] = useState("PROFILE");
+    // State to trigger the expanding line animation when in view
+    const [isInView, setIsInView] = useState(false);
+    const sectionRef = useRef<HTMLElement | null>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                }
+            },
+            { threshold: 0.15 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, []);
 
     // Tab options matching the reference
     const tabs = [
@@ -15,7 +35,7 @@ export default function About() {
     ];
 
     return (
-        <section className="pt-16 md:pt-24 pb-8 md:pb-12 bg-white text-slate-900">
+        <section ref={sectionRef} className="pt-16 md:pt-24 pb-8 md:pb-12 bg-white text-slate-900">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* =========================================
@@ -46,7 +66,16 @@ export default function About() {
                     <div className="max-w-4xl mx-auto text-center space-y-8 sm:space-y-10">
                         {/* Title Centered Directly Under Tab */}
                         <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15]">
-                            <span className="text-[#f17829]">From Vision to </span>
+                            <span className="relative inline-block">
+                                <span className="text-[#f17829]">From</span>
+                                {/* Rectangular solid orange bar matching ALDA logo & user reference */}
+                                <span
+                                    className={`absolute left-0 -bottom-1.5 sm:-bottom-2 md:-bottom-2.5 h-[6px] sm:h-[8px] md:h-[10px] bg-[#f17829] transition-all duration-1000 ease-out delay-150 ${isInView ? "w-24 opacity-100" : "w-0 opacity-0"
+                                        }`}
+                                    aria-hidden="true"
+                                />
+                            </span>{" "}
+                            <span className="text-[#f17829]">Vision to </span>
                             <span className="text-slate-950">Reality,</span>
                             <span className="block text-slate-950 mt-1">Built with Pride</span>
                         </h2>

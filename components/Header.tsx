@@ -419,9 +419,12 @@ export default function Header() {
                                                 onClick={handleCloseMenu}
                                                 className="group flex items-center justify-between py-1.5 sm:py-2 text-xl sm:text-2xl xl:text-[28px] font-light text-stone-200 hover:text-[#f17829] transition-colors"
                                             >
-                                                <span className="group-hover:translate-x-2 transition-transform duration-200">
-                                                    Home
-                                                </span>
+                                                <div className="inline-flex flex-col items-start">
+                                                    <span className="group-hover:translate-x-1.5 transition-transform duration-300">
+                                                        Home
+                                                    </span>
+                                                    <span className="h-[2px] w-6 bg-[#f17829] rounded-full mt-1 opacity-80 group-hover:opacity-100 group-hover:w-full transition-all duration-300 ease-out group-hover:shadow-[0_0_8px_rgba(241,120,41,0.6)]" />
+                                                </div>
                                                 <span className="text-xs text-stone-500 opacity-0 group-hover:opacity-100 transition-opacity">
                                                     01
                                                 </span>
@@ -436,9 +439,18 @@ export default function Header() {
                                                     onClick={handleCloseMenu}
                                                     className="group text-xl sm:text-2xl xl:text-[28px] font-light text-stone-200 hover:text-[#f17829] transition-colors flex-1"
                                                 >
-                                                    <span className="group-hover:translate-x-2 inline-block transition-transform duration-200">
-                                                        About Us
-                                                    </span>
+                                                    <div className="inline-flex flex-col items-start">
+                                                        <span className="group-hover:translate-x-1.5 inline-block transition-transform duration-300">
+                                                            About Us
+                                                        </span>
+                                                        <span
+                                                            className={`h-[2px] bg-[#f17829] rounded-full mt-1 transition-all duration-300 ease-out ${
+                                                                openCategory === "about"
+                                                                    ? "w-full opacity-100 shadow-[0_0_8px_rgba(241,120,41,0.5)]"
+                                                                    : "w-6 opacity-80 group-hover:opacity-100 group-hover:w-full group-hover:shadow-[0_0_8px_rgba(241,120,41,0.6)]"
+                                                            }`}
+                                                        />
+                                                    </div>
                                                 </Link>
                                                 <button
                                                     type="button"
@@ -460,11 +472,10 @@ export default function Header() {
                                             </div>
 
                                             <div
-                                                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
-                                                    openCategory === "about"
-                                                        ? "grid-rows-[1fr] opacity-100 my-1.5"
-                                                        : "grid-rows-[0fr] opacity-0 my-0 pointer-events-none"
-                                                }`}
+                                                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${openCategory === "about"
+                                                    ? "grid-rows-[1fr] opacity-100 my-1.5"
+                                                    : "grid-rows-[0fr] opacity-0 my-0 pointer-events-none"
+                                                    }`}
                                             >
                                                 <div className="overflow-hidden">
                                                     <div className="pl-3 sm:pl-4 pr-2 py-2 sm:py-3 space-y-2 bg-white/5 rounded-xl">
@@ -475,7 +486,10 @@ export default function Header() {
                                                                 onClick={handleCloseMenu}
                                                                 className="group/sub flex items-center justify-between text-xs sm:text-sm text-stone-300 hover:text-[#f17829] transition-colors py-1"
                                                             >
-                                                                <span>{item.name}</span>
+                                                                <span className="inline-flex items-center gap-2">
+                                                                    <span className="w-0 group-hover/sub:w-2.5 h-[1.5px] bg-[#f17829] rounded-full transition-all duration-200" />
+                                                                    <span className="group-hover/sub:translate-x-0.5 transition-transform duration-200">{item.name}</span>
+                                                                </span>
                                                                 <span className="text-xs text-stone-500 group-hover/sub:text-[#f17829] transition-colors">
                                                                     →
                                                                 </span>
@@ -494,9 +508,18 @@ export default function Header() {
                                                     onClick={handleCloseMenu}
                                                     className="group text-xl sm:text-2xl xl:text-[28px] font-light text-stone-200 hover:text-[#f17829] transition-colors flex-1"
                                                 >
-                                                    <span className="group-hover:translate-x-2 inline-block transition-transform duration-200">
-                                                        What We Do
-                                                    </span>
+                                                    <div className="inline-flex flex-col items-start">
+                                                        <span className="group-hover:translate-x-1.5 inline-block transition-transform duration-300">
+                                                            What We Do
+                                                        </span>
+                                                        <span
+                                                            className={`h-[2px] bg-[#f17829] rounded-full mt-1 transition-all duration-300 ease-out ${
+                                                                openCategory === "whatwedo"
+                                                                    ? "w-full opacity-100 shadow-[0_0_8px_rgba(241,120,41,0.5)]"
+                                                                    : "w-6 opacity-80 group-hover:opacity-100 group-hover:w-full group-hover:shadow-[0_0_8px_rgba(241,120,41,0.6)]"
+                                                            }`}
+                                                        />
+                                                    </div>
                                                 </Link>
                                                 <button
                                                     type="button"
@@ -518,11 +541,10 @@ export default function Header() {
                                             </div>
 
                                             <div
-                                                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
-                                                    openCategory === "whatwedo"
-                                                        ? "grid-rows-[1fr] opacity-100 my-1.5"
-                                                        : "grid-rows-[0fr] opacity-0 my-0 pointer-events-none"
-                                                }`}
+                                                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${openCategory === "whatwedo"
+                                                    ? "grid-rows-[1fr] opacity-100 my-1.5"
+                                                    : "grid-rows-[0fr] opacity-0 my-0 pointer-events-none"
+                                                    }`}
                                             >
                                                 <div className="overflow-hidden">
                                                     <div className="pl-3 sm:pl-4 pr-2 py-2 sm:py-3 space-y-2 bg-white/5 rounded-xl">
@@ -533,7 +555,10 @@ export default function Header() {
                                                                 onClick={handleCloseMenu}
                                                                 className="group/sub flex items-center justify-between text-xs sm:text-sm text-stone-300 hover:text-[#f17829] transition-colors py-1"
                                                             >
-                                                                <span>{item.name}</span>
+                                                                <span className="inline-flex items-center gap-2">
+                                                                    <span className="w-0 group-hover/sub:w-2.5 h-[1.5px] bg-[#f17829] rounded-full transition-all duration-200" />
+                                                                    <span className="group-hover/sub:translate-x-0.5 transition-transform duration-200">{item.name}</span>
+                                                                </span>
                                                                 <span className="text-xs text-stone-500 group-hover/sub:text-[#f17829] transition-colors">
                                                                     →
                                                                 </span>
@@ -552,9 +577,18 @@ export default function Header() {
                                                     onClick={handleCloseMenu}
                                                     className="group text-xl sm:text-2xl xl:text-[28px] font-light text-stone-200 hover:text-[#f17829] transition-colors flex-1"
                                                 >
-                                                    <span className="group-hover:translate-x-2 inline-block transition-transform duration-200">
-                                                        Projects
-                                                    </span>
+                                                    <div className="inline-flex flex-col items-start">
+                                                        <span className="group-hover:translate-x-1.5 inline-block transition-transform duration-300">
+                                                            Projects
+                                                        </span>
+                                                        <span
+                                                            className={`h-[2px] bg-[#f17829] rounded-full mt-1 transition-all duration-300 ease-out ${
+                                                                openCategory === "projects"
+                                                                    ? "w-full opacity-100 shadow-[0_0_8px_rgba(241,120,41,0.5)]"
+                                                                    : "w-6 opacity-80 group-hover:opacity-100 group-hover:w-full group-hover:shadow-[0_0_8px_rgba(241,120,41,0.6)]"
+                                                            }`}
+                                                        />
+                                                    </div>
                                                 </Link>
                                                 <button
                                                     type="button"
@@ -576,11 +610,10 @@ export default function Header() {
                                             </div>
 
                                             <div
-                                                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
-                                                    openCategory === "projects"
-                                                        ? "grid-rows-[1fr] opacity-100 my-1.5"
-                                                        : "grid-rows-[0fr] opacity-0 my-0 pointer-events-none"
-                                                }`}
+                                                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${openCategory === "projects"
+                                                    ? "grid-rows-[1fr] opacity-100 my-1.5"
+                                                    : "grid-rows-[0fr] opacity-0 my-0 pointer-events-none"
+                                                    }`}
                                             >
                                                 <div className="overflow-hidden">
                                                     <div className="pl-3 sm:pl-4 pr-2 py-2 sm:py-3 space-y-2 bg-white/5 rounded-xl">
@@ -589,7 +622,10 @@ export default function Header() {
                                                             onClick={handleCloseMenu}
                                                             className="group/sub flex items-center justify-between text-xs sm:text-sm text-stone-300 hover:text-[#f17829] transition-colors py-1"
                                                         >
-                                                            <span>All Projects Overview</span>
+                                                            <span className="inline-flex items-center gap-2">
+                                                                <span className="w-0 group-hover/sub:w-2.5 h-[1.5px] bg-[#f17829] rounded-full transition-all duration-200" />
+                                                                <span className="group-hover/sub:translate-x-0.5 transition-transform duration-200">All Projects Overview</span>
+                                                            </span>
                                                             <span className="text-xs text-stone-500 group-hover/sub:text-[#f17829]">→</span>
                                                         </Link>
                                                         {aldaProjects.map((p) => (
@@ -599,7 +635,10 @@ export default function Header() {
                                                                 onClick={handleCloseMenu}
                                                                 className="group/sub flex items-center justify-between text-xs sm:text-sm text-stone-300 hover:text-[#f17829] transition-colors py-1"
                                                             >
-                                                                <span>{p.name}</span>
+                                                                <span className="inline-flex items-center gap-2">
+                                                                    <span className="w-0 group-hover/sub:w-2.5 h-[1.5px] bg-[#f17829] rounded-full transition-all duration-200" />
+                                                                    <span className="group-hover/sub:translate-x-0.5 transition-transform duration-200">{p.name}</span>
+                                                                </span>
                                                                 <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#f17829]/20 text-[#f17829] font-mono">
                                                                     {p.status}
                                                                 </span>

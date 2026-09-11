@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 export default function VisionMission() {
     const sectionRef = useRef<HTMLElement>(null);
     const [isVisible, setIsVisible] = useState(false);
+    const isInView = isVisible;
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -71,7 +72,17 @@ export default function VisionMission() {
 
                     {/* Simple Title */}
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-                        Built With <span className="text-[#f17829]">Purpose</span>
+                        <span className="relative inline-block">
+                            Built With
+                            {/* Rectangular solid orange bar matching ALDA logo & user reference */}
+                            <span
+                                className={`absolute left-0 -bottom-1.5 sm:-bottom-2 md:-bottom-2.5 h-[6px] sm:h-[8px] md:h-[10px] bg-[#f17829] transition-all duration-1000 ease-out delay-150 ${
+                                    isInView ? "w-24 opacity-100" : "w-0 opacity-0"
+                                }`}
+                                aria-hidden="true"
+                            />
+                        </span>{" "}
+                        <span className="text-[#f17829]">Purpose</span>
                     </h2>
 
                     {/* Simple Description */}

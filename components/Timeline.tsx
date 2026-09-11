@@ -243,10 +243,6 @@ export default function Timeline() {
                             Building More Than{" "}
                             <span className="relative inline-block text-[#f17829]">
                                 Homes
-                                <span
-                                    aria-hidden="true"
-                                    className="absolute -bottom-1 left-0 w-full h-[2.5px] bg-gradient-to-r from-transparent via-[#f17829] to-transparent rounded-full"
-                                />
                             </span>
                         </h2>
                         <p className="mt-1.5 text-sm sm:text-base text-slate-600 font-normal max-w-xl leading-relaxed">
@@ -262,8 +258,8 @@ export default function Timeline() {
                             disabled={!canScrollLeft}
                             aria-label="Previous milestones"
                             className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-300 shadow-2xs ${canScrollLeft
-                                    ? "bg-white border-slate-300 text-slate-800 hover:border-[#f17829] hover:text-[#f17829] hover:bg-[#f17829]/10 cursor-pointer shadow-sm"
-                                    : "bg-slate-100/60 border-slate-200 text-slate-400 cursor-not-allowed"
+                                ? "bg-white border-slate-300 text-slate-800 hover:border-[#f17829] hover:text-[#f17829] hover:bg-[#f17829]/10 cursor-pointer shadow-sm"
+                                : "bg-slate-100/60 border-slate-200 text-slate-400 cursor-not-allowed"
                                 }`}
                         >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -276,8 +272,8 @@ export default function Timeline() {
                             disabled={!canScrollRight}
                             aria-label="Next milestones"
                             className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-300 shadow-2xs ${canScrollRight
-                                    ? "bg-white border-slate-300 text-slate-800 hover:border-[#f17829] hover:text-[#f17829] hover:bg-[#f17829]/10 cursor-pointer shadow-sm"
-                                    : "bg-slate-100/60 border-slate-200 text-slate-400 cursor-not-allowed"
+                                ? "bg-white border-slate-300 text-slate-800 hover:border-[#f17829] hover:text-[#f17829] hover:bg-[#f17829]/10 cursor-pointer shadow-sm"
+                                : "bg-slate-100/60 border-slate-200 text-slate-400 cursor-not-allowed"
                                 }`}
                         >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
