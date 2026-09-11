@@ -88,3 +88,76 @@ body {
     -webkit-text-stroke: 1.5px #f17829;
   }
 }
+
+/* ==========================================================================
+   Subtle Luxury Shimmer & Pulse Glow for Orange Highlighted Accents
+   ========================================================================== */
+
+@keyframes orange-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-orange-shimmer {
+  background: linear-gradient(90deg, #f17829 0%, #ffaa6d 50%, #f17829 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #f17829;
+  animation: orange-shimmer 4s ease-in-out infinite;
+}
+
+@keyframes orange-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(241, 120, 41, 0.15), inset 0 0 8px rgba(241, 120, 41, 0.05);
+    border-color: rgba(241, 120, 41, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(241, 120, 41, 0.35), inset 0 0 12px rgba(241, 120, 41, 0.12);
+    border-color: rgba(241, 120, 41, 0.55);
+  }
+}
+
+.animate-orange-glow {
+  animation: orange-glow-pulse 3s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   Glowing Pulse & Sheen Sweep for Solid Orange Background Badges
+   ========================================================================== */
+
+@keyframes orange-badge-pulse {
+  0%, 100% {
+    box-shadow: 0 1px 4px rgba(241, 120, 41, 0.3), 0 0 0 0 rgba(241, 120, 41, 0.2);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 2px 10px rgba(241, 120, 41, 0.5), 0 0 10px 2px rgba(241, 120, 41, 0.35);
+    transform: scale(1.03);
+  }
+}
+
+.animate-orange-badge {
+  animation: orange-badge-pulse 3.2s ease-in-out infinite;
+}
+
+@keyframes sheen-sweep {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  35%, 100% {
+    transform: translateX(250%) skewX(-20deg);
+  }
+}
+
+.animate-sheen {
+  animation: sheen-sweep 3.5s ease-in-out infinite;
+}

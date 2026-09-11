@@ -156,6 +156,7 @@ export default function Counter({
            ========================================================================= */}
                 <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12 md:mb-14">
                     <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold tracking-wider uppercase text-[#f17829] bg-[#f17829]/10 border border-[#f17829]/30 mb-4 backdrop-blur-sm">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#f17829]"></span>
                         <span>Milestones & Impact</span>
                     </div>
 

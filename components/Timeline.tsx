@@ -383,6 +383,6 @@ export default function Timeline() {
                 {/* Subtle Scroll Hint */}
 
             </div>
-        </section>
+        </section >
     );
 }

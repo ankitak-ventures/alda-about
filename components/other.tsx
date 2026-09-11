@@ -161,14 +161,22 @@ export default function Other() {
                 >
                     <div>
                         {/* Eyebrow Badge */}
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f17829]/10 border border-[#f17829]/20 text-[#f17829] text-xs font-semibold uppercase tracking-widest mb-3">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#f17829] animate-pulse" />
-                            <span>PRESS & COVERAGE</span>
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f17829]/10 border border-[#f17829]/30 text-[#f17829] text-xs font-semibold uppercase tracking-widest mb-3.5 animate-orange-glow backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#f17829] opacity-75 duration-1000" />
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#f17829]" />
+                            </span>
+                            <span className="animate-orange-shimmer font-bold">PRESS & COVERAGE</span>
                         </div>
 
-                        {/* Main Title: MEDIA POST */}
+                        {/* Main Title: MEDIA POST with Animated Orange Highlight */}
                         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight uppercase leading-none">
-                            MEDIA POST
+                            MEDIA{" "}
+                            <span className="relative inline-block">
+                                <span className="animate-orange-shimmer inline-block">POST</span>
+                                {/* Animated underline bar matching ALDA brand styling */}
+
+                            </span>
                         </h2>
                     </div>
 
@@ -202,8 +210,8 @@ export default function Other() {
                                 transitionDelay: isVisible ? `${index * 70}ms` : "0ms",
                             }}
                             className={`group relative p-6 rounded-xl bg-[#171a23]/75 backdrop-blur-md border border-slate-800/80 hover:border-[#f17829]/40 hover:bg-[#1c202c]/90 transition-all duration-300 ease-out cursor-pointer flex flex-col justify-between gap-5 overflow-hidden shadow-sm hover:shadow-xl hover:shadow-black/40 hover:-translate-y-1 transform ${isVisible
-                                    ? "translate-y-0 opacity-100"
-                                    : "translate-y-8 opacity-0"
+                                ? "translate-y-0 opacity-100"
+                                : "translate-y-8 opacity-0"
                                 }`}
                         >
                             {/* Subtle Ambient Gold Top-border Highlight on Hover */}
@@ -212,9 +220,14 @@ export default function Other() {
                             {/* Top Details: Category Pill & Read Time */}
                             <div>
                                 <div className="flex items-center justify-between gap-2 mb-3">
-                                    <span className="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-wider text-[#f17829] uppercase">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-[#f17829]" />
-                                        {item.category}
+                                    <span className="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-wider text-[#f17829] uppercase group-hover:text-[#ff9248] transition-colors duration-200">
+                                        <span className="relative flex h-1.5 w-1.5">
+                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#f17829] opacity-40 group-hover:opacity-90 duration-700" />
+                                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#f17829]" />
+                                        </span>
+                                        <span className="group-hover:translate-x-0.5 transition-transform duration-200">
+                                            {item.category}
+                                        </span>
                                     </span>
                                     <span className="text-[11px] font-mono text-slate-500">
                                         {item.readTime}
@@ -285,7 +298,7 @@ export default function Other() {
 
                         {/* Modal Header */}
                         <div className="flex items-center gap-2 mb-3">
-                            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium uppercase tracking-wider bg-[#f17829]/10 text-[#f17829] border border-[#f17829]/30">
+                            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium uppercase tracking-wider bg-[#f17829]/10 text-[#f17829] border border-[#f17829]/30 animate-orange-glow">
                                 {activeModalItem.badge}
                             </span>
                             <span className="text-xs text-slate-400 font-mono">
@@ -301,8 +314,8 @@ export default function Other() {
                             {activeModalItem.title}
                         </h4>
 
-                        {/* Tagline */}
-                        <p className="text-sm font-medium text-[#f17829] mb-4">
+                        {/* Tagline with subtle orange shimmer */}
+                        <p className="text-sm font-medium animate-orange-shimmer mb-4">
                             {activeModalItem.description}
                         </p>
 

@@ -181,8 +181,17 @@ export default function WhyChooseUs() {
                                             {/* Description with Highlight Badge */}
                                             <p className="text-xs sm:text-[13px] md:text-sm text-gray-600 leading-relaxed font-normal pl-0.5">
                                                 {item.description}{" "}
-                                                <span className="inline-block bg-[#f17829] text-white font-bold px-1.5 py-0.5 rounded text-xs shadow-2xs">
-                                                    {item.highlightWord}
+                                                <span
+                                                    style={{ animationDelay: `${index * 800}ms` }}
+                                                    className="relative inline-flex items-center justify-center overflow-hidden rounded px-2 py-0.5 text-xs font-bold text-white bg-[#f17829] shadow-sm transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-[#f17829]/40 animate-orange-badge cursor-default align-baseline"
+                                                >
+                                                    {/* Animated sheen highlight */}
+                                                    <span
+                                                        style={{ animationDelay: `${index * 800}ms` }}
+                                                        className="absolute inset-0 -translate-x-full animate-sheen bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"
+                                                        aria-hidden="true"
+                                                    />
+                                                    <span className="relative z-10">{item.highlightWord}</span>
                                                 </span>
                                             </p>
                                         </div>
@@ -224,8 +233,17 @@ export default function WhyChooseUs() {
                                             {/* Description with Highlight Badge */}
                                             <p className="text-xs sm:text-[13px] md:text-sm text-gray-600 leading-relaxed font-normal pl-0.5">
                                                 {item.description}{" "}
-                                                <span className="inline-block bg-[#f17829] text-white font-bold px-1.5 py-0.5 rounded text-xs shadow-2xs">
-                                                    {item.highlightWord}
+                                                <span
+                                                    style={{ animationDelay: `${(index + 2) * 800}ms` }}
+                                                    className="relative inline-flex items-center justify-center overflow-hidden rounded px-2 py-0.5 text-xs font-bold text-white bg-[#f17829] shadow-sm transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-[#f17829]/40 animate-orange-badge cursor-default align-baseline"
+                                                >
+                                                    {/* Animated sheen highlight */}
+                                                    <span
+                                                        style={{ animationDelay: `${(index + 2) * 800}ms` }}
+                                                        className="absolute inset-0 -translate-x-full animate-sheen bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"
+                                                        aria-hidden="true"
+                                                    />
+                                                    <span className="relative z-10">{item.highlightWord}</span>
                                                 </span>
                                             </p>
                                         </div>
