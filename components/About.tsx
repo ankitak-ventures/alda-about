@@ -65,7 +65,7 @@ export default function About() {
                 {activeTab === "PROFILE" && (
                     <div className="max-w-4xl mx-auto text-center space-y-8 sm:space-y-10">
                         {/* Title Centered Directly Under Tab */}
-                        <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15]">
+                        <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.15]">
                             <span className="relative inline-block">
                                 <span className="text-[#f17829]">From</span>
                                 {/* Rectangular solid orange bar matching ALDA logo & user reference */}
@@ -104,7 +104,7 @@ export default function About() {
            ========================================= */}
                 {activeTab === "TEAM" && (
                     <div className="max-w-4xl mx-auto text-center space-y-8 sm:space-y-10">
-                        <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15]">
+                        <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.15]">
                             <span className="text-[#f17829]">The Minds Behind </span>
                             <span className="text-slate-950">ALDA Homes</span>
                         </h2>
@@ -124,7 +124,7 @@ export default function About() {
            ========================================= */}
                 {activeTab === "VALUES" && (
                     <div className="max-w-4xl mx-auto text-center space-y-8 sm:space-y-10">
-                        <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15]">
+                        <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.15]">
                             <span className="text-[#f17829]">Our Principles, </span>
                             <span className="text-slate-950">Built on Pride</span>
                         </h2>
@@ -144,7 +144,7 @@ export default function About() {
            ========================================= */}
                 {activeTab === "AWARDS" && (
                     <div className="max-w-4xl mx-auto text-center space-y-8 sm:space-y-10">
-                        <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15]">
+                        <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.15]">
                             <span className="text-[#f17829]">Honored with </span>
                             <span className="text-slate-950">Excellence</span>
                         </h2>

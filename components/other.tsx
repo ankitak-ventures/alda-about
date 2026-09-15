@@ -170,7 +170,7 @@ export default function Other() {
                         </div>
 
                         {/* Main Title: MEDIA POST with Animated Orange Highlight */}
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight uppercase leading-none">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight uppercase leading-none">
                             MEDIA{" "}
                             <span className="relative inline-block">
                                 <span className="animate-orange-shimmer inline-block">POST</span>

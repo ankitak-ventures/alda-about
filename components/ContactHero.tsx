@@ -1,16 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Hero() {
+export default function ContactHero() {
     return (
-        // Banner container with reduced height (400px - 420px)
+        // Banner container with identical height and style to Hero
         <section className="relative h-[400px] md:h-[520px] w-full flex items-center overflow-hidden bg-slate-950 text-white">
 
             {/* 1. Background Image with Next.js Image Optimization */}
             <div className="absolute inset-0 z-0">
                 <Image
                     src="/hero-banner.jpg"
-                    alt="ALDA Homes Luxury Architecture"
+                    alt="Contact ALDA Homes"
                     fill
                     priority
                     sizes="100vw"
@@ -32,48 +32,46 @@ export default function Hero() {
                             Home
                         </Link>
                         <span className="text-gray-600">/</span>
-                        <span className="text-[#f17829]">About Us</span>
+                        <span className="text-[#f17829]">Contact</span>
                     </nav>
 
                     {/* Eyebrow Tag / Sub-title */}
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f17829]/15 border border-[#f17829]/30 text-[#f17829] text-[11px] font-medium tracking-wide">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f17829]/15 border border-[#f17829]/30 text-[#f17829] text-[11px] font-medium tracking-wide uppercase">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#f17829] animate-pulse" />
-                        <span>Chennai · Contracting & Real Estate Development</span>
+                        <span>GET IN TOUCH</span>
                     </div>
 
-                    {/* Main Banner Heading (Reduced font size) */}
+                    {/* Main Banner Heading */}
                     <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-white leading-tight">
-                        From Vision to Reality,{" "}
+                        Let’s{" "}
                         <span className="text-[#f17829]">
-                            Built with Pride
+                            Connect
                         </span>
                     </h1>
 
-                    {/* Description / Dummy Content (Reduced font size) */}
+                    {/* Description */}
                     <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal max-w-xl">
-                        With over 40 years of continuous construction and engineering heritage,
-                        ALDA Homes transforms prime spaces into vibrant communities across Chennai,
-                        delivering homes crafted with precision, passion, and enduring value.
+                        Whether you’re looking for your next home or would like to know more about ALDA, we’re here to help.
                     </p>
 
                     {/* Action CTA Buttons */}
                     <div className="flex flex-wrap items-center gap-3 pt-2">
-                        <button
-                            type="button"
+                        <a
+                            href="#contact-section"
                             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold text-white bg-[#f17829] hover:bg-[#d9671e] shadow-md shadow-[#f17829]/25 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
                         >
-                            <span>Explore Projects</span>
+                            <span>Send a Message</span>
                             <svg className="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                             </svg>
-                        </button>
+                        </a>
 
-                        <button
-                            type="button"
+                        <a
+                            href="tel:+914424987654"
                             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-medium text-white bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-sm transition-all cursor-pointer"
                         >
-                            <span>Our Story & Legacy</span>
-                        </button>
+                            <span>Call Directly</span>
+                        </a>
                     </div>
 
                 </div>

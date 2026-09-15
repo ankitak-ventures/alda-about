@@ -239,7 +239,7 @@ export default function Timeline() {
                         </div>
 
                         {/* Heading */}
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#18212e] tracking-tight leading-tight">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#18212e] tracking-tight leading-tight">
                             Building More Than{" "}
                             <span className="relative inline-block text-[#f17829]">
                                 Homes

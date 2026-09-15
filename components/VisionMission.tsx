@@ -69,7 +69,7 @@ export default function VisionMission() {
                         <span>OUR PURPOSE</span>
                     </div>
 
-                    {/* Simple Title */}                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+                    {/* Simple Title */}                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-tight">
                         <span className="relative inline-block">
                             Built
                             {/* Rectangular solid orange bar matching ALDA logo & user reference */}
