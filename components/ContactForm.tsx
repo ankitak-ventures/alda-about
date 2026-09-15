@@ -52,8 +52,10 @@ export default function ContactForm() {
             id="contact-form"
             ref={sectionRef}
             aria-label="Contact and Enquiry Form"
-            className="relative w-full bg-white text-[#0B1528] py-14 sm:py-18 md:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
+            className="relative w-full bg-white text-[#0B1528] py-14 sm:py-18 md:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden scroll-mt-12"
         >
+            {/* Anchor target for ContactHero "Send a Message" link */}
+            <div id="contact-section" className="absolute -top-10 left-0 pointer-events-none" />
             <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
                     {/* =========================================================================
@@ -139,9 +141,12 @@ export default function ContactForm() {
                                             setSubmitted(false);
                                             setFormData({ name: "", email: "", phone: "", message: "" });
                                         }}
-                                        className="px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white bg-[#f17829] hover:bg-[#d9671e] transition-colors cursor-pointer"
+                                        className="group inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider text-white bg-[#f17829] hover:bg-[#d9671e] shadow-md shadow-[#f17829]/25 hover:shadow-lg hover:shadow-[#f17829]/40 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
                                     >
-                                        Submit Another Enquiry
+                                        <span>Submit Another Enquiry</span>
+                                        <svg className="w-3.5 h-3.5 stroke-[2.5] transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                        </svg>
                                     </button>
                                 </div>
                             </div>
@@ -262,9 +267,17 @@ export default function ContactForm() {
                                     <button
                                         type="submit"
                                         disabled={!agreed}
-                                        className="px-10 py-3 text-xs sm:text-sm font-bold tracking-widest uppercase text-white bg-[#f17829] hover:bg-[#d9671e] disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-[#f17829]/20 transition-all duration-200 cursor-pointer"
+                                        className="group inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase text-white bg-[#f17829] hover:bg-[#d9671e] shadow-md shadow-[#f17829]/25 hover:shadow-lg hover:shadow-[#f17829]/40 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none"
                                     >
-                                        SUBMIT
+                                        <span>SUBMIT</span>
+                                        <svg
+                                            className="w-3.5 h-3.5 stroke-[2.5] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
+                                        </svg>
                                     </button>
                                 </div>
                             </form>
